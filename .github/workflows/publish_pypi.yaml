@@ -4,18 +4,15 @@ on:
   push:
     branches:
       - main
+      
 jobs:
-  pypi-publish:
-    name: Upload release to PyPI
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: pypi
-      url: https://pypi.org/p/pymuster
-    permissions:
-      id-token: ${{ secrets.PYPI_TOKEN }}
     steps:
-     
-    - name: Publish package distributions to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
+      - uses: actions/checkout@v3
+      - name: Build and publish to pypi
+        uses: JRubics/poetry-publish@v1.17
+        with:
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
 
 
