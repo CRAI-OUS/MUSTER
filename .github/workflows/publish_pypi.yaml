@@ -12,12 +12,10 @@ jobs:
       name: pypi
       url: https://pypi.org/p/pymuster
     permissions:
-      id-token:  ${{ secrets.PYPI_TOKEN }} 
+      id-token: ${{ secrets.PYPI_TOKEN }}
     steps:
-
-      
+     
     - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
 
 
-      
