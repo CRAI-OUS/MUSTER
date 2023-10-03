@@ -1,0 +1,23 @@
+# .github/workflows/ci-cd.yml
+name: Publish to PyPI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  pypi-publish:
+    name: Upload release to PyPI
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/pymuster
+    permissions:
+      id-token:  ${{ secrets.PYPI_TOKEN }} 
+    steps:
+
+      
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+
+
+      
