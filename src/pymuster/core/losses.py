@@ -36,7 +36,7 @@ class Fourier:
         freqsx = torch.fft.fftfreq(self.image_size[0], d=self.pix_dim[0], device=y.device)
         freqsy = torch.fft.fftfreq(self.image_size[1], d=self.pix_dim[1], device=y.device)
         freqsz = torch.fft.fftfreq(self.image_size[2], d=self.pix_dim[2], device=y.device)
-        freqsx, freqsy, freqsz = torch.meshgrid(freqsx, freqsy, freqsz)
+        freqsx, freqsy, freqsz = torch.meshgrid(freqsx, freqsy, freqsz, indexing="ij")
 
         filter = torch.exp(-1 / 2 * (freqsx**2 + freqsy**2 + freqsz**2) / self.filter_omega**2)
 
@@ -237,7 +237,7 @@ class FourierPearsonCorrelation:
         freqsx = torch.fft.fftfreq(self.image_size[0], d=self.pix_dim[0], device=y_true.device)
         freqsy = torch.fft.fftfreq(self.image_size[1], d=self.pix_dim[1], device=y_true.device)
         freqsz = torch.fft.fftfreq(self.image_size[2], d=self.pix_dim[2], device=y_true.device)
-        freqsx, freqsy, freqsz = torch.meshgrid(freqsx, freqsy, freqsz)
+        freqsx, freqsy, freqsz = torch.meshgrid(freqsx, freqsy, freqsz, indexing="ij")
 
         filter = torch.exp(-1 / 2 * (freqsx**2 + freqsy**2 + freqsz**2) / self.filter_omega**2)
 

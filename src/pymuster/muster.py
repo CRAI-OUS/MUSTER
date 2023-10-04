@@ -15,6 +15,8 @@ from .core import field_calculus
 from .core import losses
 from .core import utils
 
+import warnings
+
 
 class StageRegistration:
     r"""Register a longitudinal series of images using a series of deformation fields using a single resolution.
@@ -247,7 +249,7 @@ class StageRegistration:
 
         # Cosine annealing with linear warmup
         warmup_steps = int(self.num_iterations * 0.2)
-        scheduler1 = torch.optim.lr_scheduler.LambdaLR(optimizer, LRPolicy(warmup_steps))
+        scheduler1 = torch.optim.lr_scheduler.LambdaLR(optimizer, lambda step: 1 / (warmup_steps) * (step + 1))
         scheduler2 = torch.optim.lr_scheduler.CosineAnnealingLR(
             optimizer, T_max=int(self.num_iterations - warmup_steps))
         scheduler = torch.optim.lr_scheduler.SequentialLR(
@@ -266,6 +268,8 @@ class StageRegistration:
         # Object for keeping track of convergence of the optimization process
         running_mean_var = utils.RunningMeanVar()
 
+        use_autocast = torch.cuda.is_available() and (not device.__eq__("cpu"))
+
         with alive_bar(
                 self.num_iterations,
                 force_tty=True,
@@ -279,7 +283,7 @@ class StageRegistration:
             for iteration_idx in range(self.num_iterations):
                 optimizer.zero_grad()
 
-                with torch.cuda.amp.autocast(enabled=True):
+                with torch.cuda.amp.autocast(use_autocast):
                     if self.rigid:
                         # Add the identity transformation to first timepoint
                         rots = torch.cat((torch.zeros((1, 3), device=device), rotation_params), dim=0)
@@ -369,11 +373,19 @@ class StageRegistration:
                     # Combine the losses
                     loss += image_loss
 
-                # Propagate the loss and update the parameters
-                scaler.scale(loss).backward()
-                scaler.step(optimizer)
-                scaler.update()
-                scheduler.step()
+                if use_autocast:
+                    # Propagate the loss and update the parameters
+                    scaler.scale(loss).backward()
+                    scaler.step(optimizer)
+                    scaler.update()
+                else:
+                    loss.backward()
+                    optimizer.step()
+
+                # Ignore the warning from the scheduler
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    scheduler.step()
 
                 bar()
                 bar.title(f"\tLoss: {loss.item():.4e}, Image Loss: {image_loss.item():.4e}")
@@ -661,7 +673,7 @@ class StageRegistration:
         freqy = torch.fft.fftfreq(field.shape[3], d=self.deform_pix_dim[1]).to(self.device)
         freqz = torch.fft.fftfreq(field.shape[4], d=self.deform_pix_dim[2]).to(self.device)
 
-        freqx, freqy, freqz = torch.meshgrid(freqx, freqy, freqz)
+        freqx, freqy, freqz = torch.meshgrid(freqx, freqy, freqz, indexing="ij")
         omega_f = 1 / (2 * torch.pi * sigma)
         filter_response = torch.exp(-1 / 2 * ((freqx**2 + freqy**2 + freqz**2) / omega_f**2))
         v_fft = filter_response * v_fft
@@ -772,8 +784,8 @@ class Registration:
     :attr:`image_size` is replaced by :attr:`stages_img_scales`.
     
     Example:
-        >>> from MUSTER import MultiStageDeformableRegistration
-        >>> deform_reg = MultiStageDeformableRegistration(
+        >>> from muster import Registration
+        >>> deform_reg = Registration(
         >>>     stages_iterations=[500, 250, 100],
         >>>     stages_img_scales=[4, 2, 1],
         >>>     stages_deform_scales=[4, 2, 2],
@@ -1036,15 +1048,6 @@ class SpatialTransformer(nn.Module):
             mode=self.mode,
             padding_mode=self.padding_mode,
         )
-
-
-class LRPolicy(object):
-
-    def __init__(self, warmup_steps=30):
-        self.warmup_steps = warmup_steps
-
-    def __call__(self, step):
-        return 1 / (self.warmup_steps) * (step + 1)
 
 
 def _get_dig_ind(N, offset):
