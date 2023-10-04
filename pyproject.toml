@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pymuster"
-version = "0.1.3"
+version = "0.1.4"
 description = "A registration tool for medical images"
 authors = ["Edvard Grødem <edvard.grodem@gmail.com>"]
 license = "MIT"
