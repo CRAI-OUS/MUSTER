@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pymuster.core package &mdash; pymuster 0.1.4 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=fd825880"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pymuster
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pymuster.core package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pymuster.core.field_calculus">pymuster.core.field_calculus module</a><ul>
+<li><a class="reference internal" href="#pymuster.core.field_calculus.curl"><code class="docutils literal notranslate"><span class="pre">curl()</span></code></a></li>
+<li><a class="reference internal" href="#pymuster.core.field_calculus.determinant"><code class="docutils literal notranslate"><span class="pre">determinant()</span></code></a></li>
+<li><a class="reference internal" href="#pymuster.core.field_calculus.divergence"><code class="docutils literal notranslate"><span class="pre">divergence()</span></code></a></li>
+<li><a class="reference internal" href="#pymuster.core.field_calculus.forward_alpha"><code class="docutils literal notranslate"><span class="pre">forward_alpha()</span></code></a></li>
+<li><a class="reference internal" href="#pymuster.core.field_calculus.integrate_forward_flow"><code class="docutils literal notranslate"><span class="pre">integrate_forward_flow()</span></code></a></li>
+<li><a class="reference internal" href="#pymuster.core.field_calculus.jacobian"><code class="docutils literal notranslate"><span class="pre">jacobian()</span></code></a></li>
+<li><a class="reference internal" href="#pymuster.core.field_calculus.laplacian"><code class="docutils literal notranslate"><span class="pre">laplacian()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pymuster.core.losses">pymuster.core.losses module</a><ul>
+<li><a class="reference internal" href="#pymuster.core.losses.Fourier"><code class="docutils literal notranslate"><span class="pre">Fourier</span></code></a><ul>
+<li><a class="reference internal" href="#pymuster.core.losses.Fourier.filter"><code class="docutils literal notranslate"><span class="pre">Fourier.filter()</span></code></a></li>
+<li><a class="reference internal" href="#pymuster.core.losses.Fourier.loss"><code class="docutils literal notranslate"><span class="pre">Fourier.loss()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pymuster.core.losses.GaussNCC"><code class="docutils literal notranslate"><span class="pre">GaussNCC</span></code></a><ul>
+<li><a class="reference internal" href="#pymuster.core.losses.GaussNCC.loss"><code class="docutils literal notranslate"><span class="pre">GaussNCC.loss()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pymuster.core.losses.MSE"><code class="docutils literal notranslate"><span class="pre">MSE</span></code></a><ul>
+<li><a class="reference internal" href="#pymuster.core.losses.MSE.loss"><code class="docutils literal notranslate"><span class="pre">MSE.loss()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pymuster.core.losses.NCC"><code class="docutils literal notranslate"><span class="pre">NCC</span></code></a><ul>
+<li><a class="reference internal" href="#pymuster.core.losses.NCC.loss"><code class="docutils literal notranslate"><span class="pre">NCC.loss()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pymuster.core.losses.NCCS"><code class="docutils literal notranslate"><span class="pre">NCCS</span></code></a><ul>
+<li><a class="reference internal" href="#pymuster.core.losses.NCCS.loss"><code class="docutils literal notranslate"><span class="pre">NCCS.loss()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pymuster.core.losses.WNCC"><code class="docutils literal notranslate"><span class="pre">WNCC</span></code></a><ul>
+<li><a class="reference internal" href="#pymuster.core.losses.WNCC.loss"><code class="docutils literal notranslate"><span class="pre">WNCC.loss()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pymuster.core.utils">pymuster.core.utils module</a><ul>
+<li><a class="reference internal" href="#pymuster.core.utils.RunningMeanVar"><code class="docutils literal notranslate"><span class="pre">RunningMeanVar</span></code></a><ul>
+<li><a class="reference internal" href="#pymuster.core.utils.RunningMeanVar.add"><code class="docutils literal notranslate"><span class="pre">RunningMeanVar.add()</span></code></a></li>
+<li><a class="reference internal" href="#pymuster.core.utils.RunningMeanVar.mean"><code class="docutils literal notranslate"><span class="pre">RunningMeanVar.mean()</span></code></a></li>
+<li><a class="reference internal" href="#pymuster.core.utils.RunningMeanVar.var"><code class="docutils literal notranslate"><span class="pre">RunningMeanVar.var()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pymuster.core.utils.VectorPearsonCorrelation"><code class="docutils literal notranslate"><span class="pre">VectorPearsonCorrelation()</span></code></a></li>
+<li><a class="reference internal" href="#pymuster.core.utils.grid"><code class="docutils literal notranslate"><span class="pre">grid()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pymuster.core">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pymuster</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pymuster.core package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/pymuster.core.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pymuster-core-package">
+<h1>pymuster.core package<a class="headerlink" href="#pymuster-core-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-pymuster.core.field_calculus">
+<span id="pymuster-core-field-calculus-module"></span><h2>pymuster.core.field_calculus module<a class="headerlink" href="#module-pymuster.core.field_calculus" title="Link to this heading"></a></h2>
+<p>Containing useful functions for field calculus</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pymuster.core.field_calculus.curl">
+<span class="sig-prename descclassname"><span class="pre">pymuster.core.field_calculus.</span></span><span class="sig-name descname"><span class="pre">curl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">J</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.field_calculus.curl" title="Link to this definition"></a></dt>
+<dd><p>Returns the curl of a 3D field
+:param J: Jacobian of shape (batch_size, 3, 3, x, y, z)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymuster.core.field_calculus.determinant">
+<span class="sig-prename descclassname"><span class="pre">pymuster.core.field_calculus.</span></span><span class="sig-name descname"><span class="pre">determinant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">J</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.field_calculus.determinant" title="Link to this definition"></a></dt>
+<dd><p>Computes the determinant of a 3x3 matrix</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymuster.core.field_calculus.divergence">
+<span class="sig-prename descclassname"><span class="pre">pymuster.core.field_calculus.</span></span><span class="sig-name descname"><span class="pre">divergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">J</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.field_calculus.divergence" title="Link to this definition"></a></dt>
+<dd><p>Returns the divergence of a 3D field
+:param J: Jacobian of shape (batch_size, 3, 3, x, y, z)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymuster.core.field_calculus.forward_alpha">
+<span class="sig-prename descclassname"><span class="pre">pymuster.core.field_calculus.</span></span><span class="sig-name descname"><span class="pre">forward_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sp_tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.field_calculus.forward_alpha" title="Link to this definition"></a></dt>
+<dd><p>helper function for step (4): Calculation of forward flows
+&#64;param v_t: the velocity field
+&#64;param sp_tr: the spatial transformer
+&#64;return:</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymuster.core.field_calculus.integrate_forward_flow">
+<span class="sig-prename descclassname"><span class="pre">pymuster.core.field_calculus.</span></span><span class="sig-name descname"><span class="pre">integrate_forward_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sp_tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.field_calculus.integrate_forward_flow" title="Link to this definition"></a></dt>
+<dd><p>implements step (4): Calculation of forward flows
+&#64;return:</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymuster.core.field_calculus.jacobian">
+<span class="sig-prename descclassname"><span class="pre">pymuster.core.field_calculus.</span></span><span class="sig-name descname"><span class="pre">jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1.0,</span> <span class="pre">1.0,</span> <span class="pre">1.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">midpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.field_calculus.jacobian" title="Link to this definition"></a></dt>
+<dd><p>Calculates the Jacobian of a 3D field
+:param x: tensor of shape (batch_size, channels, x, y, z)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>jacobian of shape (batch_size, 3, channels, x, y, z)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>J</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymuster.core.field_calculus.laplacian">
+<span class="sig-prename descclassname"><span class="pre">pymuster.core.field_calculus.</span></span><span class="sig-name descname"><span class="pre">laplacian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">J</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1.0,</span> <span class="pre">1.0,</span> <span class="pre">1.0)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.field_calculus.laplacian" title="Link to this definition"></a></dt>
+<dd><p>Return the second order jacobian of a field</p>
+</dd></dl>
+
+</section>
+<section id="module-pymuster.core.losses">
+<span id="pymuster-core-losses-module"></span><h2>pymuster.core.losses module<a class="headerlink" href="#module-pymuster.core.losses" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pymuster.core.losses.Fourier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">Fourier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.Fourier" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.Fourier.filter">
+<span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.Fourier.filter" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.Fourier.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.Fourier.loss" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pymuster.core.losses.GaussNCC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">GaussNCC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.GaussNCC" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.GaussNCC.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.GaussNCC.loss" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pymuster.core.losses.MSE">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">MSE</span></span><a class="headerlink" href="#pymuster.core.losses.MSE" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Mean squared error loss.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.MSE.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.MSE.loss" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pymuster.core.losses.NCC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">NCC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernal_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.NCC" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.NCC.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.NCC.loss" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pymuster.core.losses.NCCS">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">NCCS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernal_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.NCCS" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.NCCS.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.NCCS.loss" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pymuster.core.losses.WNCC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">WNCC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernal_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.WNCC" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.WNCC.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.WNCC.loss" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pymuster.core.utils">
+<span id="pymuster-core-utils-module"></span><h2>pymuster.core.utils module<a class="headerlink" href="#module-pymuster.core.utils" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pymuster.core.utils.RunningMeanVar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.utils.</span></span><span class="sig-name descname"><span class="pre">RunningMeanVar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.utils.RunningMeanVar" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is used to calculate the mean and variance of the n last values
+.. rubric:: Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rmv</span> <span class="o">=</span> <span class="n">RunningMeanVar</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">rmv</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">rmv</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> – The number of values to use for calculating the mean and variance</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.utils.RunningMeanVar.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.utils.RunningMeanVar.add" title="Link to this definition"></a></dt>
+<dd><p>Add a value to the running mean and variance
+:param value: The value to add</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.utils.RunningMeanVar.mean">
+<span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.utils.RunningMeanVar.mean" title="Link to this definition"></a></dt>
+<dd><p>Returns: The mean of the last n values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.utils.RunningMeanVar.var">
+<span class="sig-name descname"><span class="pre">var</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.utils.RunningMeanVar.var" title="Link to this definition"></a></dt>
+<dd><p>Returns: The variance of the last n values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymuster.core.utils.VectorPearsonCorrelation">
+<span class="sig-prename descclassname"><span class="pre">pymuster.core.utils.</span></span><span class="sig-name descname"><span class="pre">VectorPearsonCorrelation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.utils.VectorPearsonCorrelation" title="Link to this definition"></a></dt>
+<dd><p>Calculates the Pearson correlation between two vectors sets
+:param x: (num_samples, num_features)
+:param y: (num_samples, num_features)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymuster.core.utils.grid">
+<span class="sig-prename descclassname"><span class="pre">pymuster.core.utils.</span></span><span class="sig-name descname"><span class="pre">grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_interval</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.utils.grid" title="Link to this definition"></a></dt>
+<dd><p>Constructs a 3d image of a grid with a given size
+For visualization purposes
+:param grid_size: (x, y, z)
+:param grid_interval: The interval between the grid lines</p>
+</dd></dl>
+
+</section>
+<section id="module-pymuster.core">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pymuster.core" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Edvard Grødem.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

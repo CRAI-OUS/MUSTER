@@ -1,0 +1,30 @@
+pymuster package
+================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pymuster.cli
+   pymuster.core
+
+Submodules
+----------
+
+pymuster.muster module
+----------------------
+
+.. automodule:: pymuster.muster
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: pymuster
+   :members:
+   :undoc-members:
+   :show-inheritance:

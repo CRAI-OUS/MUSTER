@@ -1,0 +1,7 @@
+pymuster
+========
+
+.. toctree::
+   :maxdepth: 4
+
+   pymuster

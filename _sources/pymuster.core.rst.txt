@@ -1,0 +1,37 @@
+pymuster.core package
+=====================
+
+Submodules
+----------
+
+pymuster.core.field\_calculus module
+------------------------------------
+
+.. automodule:: pymuster.core.field_calculus
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pymuster.core.losses module
+---------------------------
+
+.. automodule:: pymuster.core.losses
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pymuster.core.utils module
+--------------------------
+
+.. automodule:: pymuster.core.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: pymuster.core
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,21 @@
+pymuster.cli package
+====================
+
+Submodules
+----------
+
+pymuster.cli.cli module
+-----------------------
+
+.. automodule:: pymuster.cli.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: pymuster.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
