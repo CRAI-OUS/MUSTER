@@ -45,6 +45,12 @@ class StageRegistration:
         * ``img_similarity_metric="NCCS"``: Use a sobel filter to compute the gradient of the two images, and use the 
             normalized local cross correlation between the two gradients as loss. The local window
             is a cube of size with side length ``3``.
+        * ``img_similarity_metric="WNCC"``: Normalized local cross correlation between the two images as loss where each 
+            local neighborhood is weighted by the cross standard deviation of the two images.
+            The local neighborhood is a cube of size with side length ``img_similarity_spatial_size``.
+        * ``img_similarity_metric="GaussNCC"``: Normalized local cross correlation between the two images as loss where
+            each local neighborhood is weighted by a gaussian filter. The standard deviation of the gaussian filter is 
+            ``img_similarity_spatial_size``.
         * ``img_similarity_metric="Fourier"``: Use the Fourier tranform to compute a filtered gradient of each images,
             and compute the global normalized cross correlation between the two filtered gradients as loss. 
             The standard deviation of the gaussian filter is ``img_similarity_spatial_size``.
@@ -71,7 +77,7 @@ class StageRegistration:
         learning_rate (float): Learning rate for optimizer.
         betas (tuple): The beta coefficients for Adam optimizer.
         tol (float): Tolerance for optimization convergence.
-        img_similarity_metric (str): The image similarity metric ('NCC', 'L2', 'NCCS', or 'Fourier')
+        img_similarity_metric (str): The image similarity metric ('NCC', 'L2', 'NCCS', 'WNCC', 'GaussNCC', or 'Fourier')
         img_similarity_spatial_size (int/float): Size or standard deviation of the local neighborhood for the image 
             similarity metric.
         verbose (bool): Flag for printing progress during optimization.
@@ -116,7 +122,7 @@ class StageRegistration:
             raise ValueError("flow_continuation can not be combined with ss")
 
         # Valid values for img_similarity_metric
-        valid_img_similarity_metrics = ["NCC", "L2", "NCCS", "Fourier"]
+        valid_img_similarity_metrics = ["NCC", "L2", "NCCS", "Fourier", "WNCC", "GaussNCC"]
         if img_similarity_metric not in valid_img_similarity_metrics:
             raise ValueError(f"img_similarity_metric must be one of {valid_img_similarity_metrics}")
 
@@ -258,7 +264,12 @@ class StageRegistration:
         if self.img_similarity_metric == "MSE" or self.img_similarity_metric == 'L2':
             image_img_similarity_metric = losses.MSE()
         elif self.img_similarity_metric == "NCC":
-            image_img_similarity_metric = losses.PearsonCorrelation(self.img_similarity_spatial_size)
+            image_img_similarity_metric = losses.NCC(self.img_similarity_spatial_size)
+        elif self.img_similarity_metric == "WNCC":
+            image_img_similarity_metric = losses.WNCC(self.img_similarity_spatial_size)
+        elif self.img_similarity_metric == "GaussNCC":
+            image_img_similarity_metric = losses.GaussNCC(self.img_similarity_spatial_size, self.image_size,
+                                                          self.pix_dim)
         elif self.img_similarity_metric == "NCCS":
             image_img_similarity_metric = losses.NCCS(self.img_similarity_spatial_size)
         elif self.img_similarity_metric == "Fourier":
@@ -268,7 +279,7 @@ class StageRegistration:
         # Object for keeping track of convergence of the optimization process
         running_mean_var = utils.RunningMeanVar()
 
-        use_autocast = torch.cuda.is_available() and (not device.__eq__("cpu"))
+        use_autocast = torch.cuda.is_available() and (str(device) != "cpu")
 
         with alive_bar(
                 self.num_iterations,
@@ -434,17 +445,19 @@ class StageRegistration:
         matrix = torch.cat([R, translation[:, :, None]], dim=2)
         return matrix
 
-    def _get_affine_grid(self, rotation, translation):
+    def _get_affine_grid(self, rotation=None, translation=None, matrix=None):
         """
         Computes the affine grid from rotation and translation
         """
-        matrix = self._get_homogeneous_transformation_matrix(rotation, translation)
+
+        if matrix is None:
+            matrix = self._get_homogeneous_transformation_matrix(rotation, translation)
 
         grid = self.sp_tr_img.grid
 
         # Grid is in the shape (N, 3, H, W, D)
         # Matrix is in the shape (N, 3, 4)
-        grid = (torch.einsum("nij, njhwd -> nihwd", matrix[:, :3, :3], grid) + matrix[:, :, 3, None, None, None])
+        grid = (torch.einsum("nij, njhwd -> nihwd", matrix[:, :3, :3], grid) + matrix[:, :3, 3, None, None, None])
         return grid
 
     def _invertability_loss(self, deform_field_fwd, deform_field_bwd):
@@ -728,7 +741,7 @@ class StageRegistration:
         elif dtype == "torch":
             return deform_matrix
 
-    def deform(self, images, deform_field):
+    def deform(self, images, deform_field, mode="bilinear", padding_mode="zeros", displacement=True):
         """
         Transforms the batch of images according to the deformation field.
         
@@ -746,8 +759,17 @@ class StageRegistration:
         images = self._convert_to_torch(images)
         deform_field = self._convert_to_torch(deform_field)
 
-        with torch.no_grad():
-            def_images = self.sp_tr_img(images, deform_field)
+        if ((mode == self.mode) and np.all(np.array(self.image_size) == np.array(images.shape[2:]))):
+            with torch.no_grad():
+                def_images = self.sp_tr_img(images, deform_field)
+        else:
+            sp_tr = SpatialTransformer(
+                images.shape[2:],
+                self.pix_dim,
+                mode=mode,
+                padding_mode=padding_mode,
+            ).to(self.device)
+            def_images = sp_tr(images, deform_field, displacement=displacement)
 
         if dtype == "np":
             return def_images.detach().cpu().numpy()
@@ -757,6 +779,31 @@ class StageRegistration:
     def rigid_transform(self, images, rotations, translations):
         grid = self._get_affine_grid(rotations, translations)
         return self.sp_tr_img(images, grid, displacement=False)
+
+    def linear_transform(self, images, matrix):
+        grid = self._get_affine_grid(matrix=matrix)
+        return self.sp_tr_img(images, grid, displacement=False)
+
+    def add_linear_transform(self, displacements, matrix):
+        if isinstance(displacements, np.ndarray):
+            dtype = "np"
+        elif isinstance(displacements, torch.Tensor):
+            dtype = "torch"
+        else:
+            raise TypeError("displacements must be either numpy array or torch tensor")
+
+        displacements = self._convert_to_torch(displacements)
+        matrix = self._convert_to_torch(matrix)
+
+        deform_field = displacements + self._get_affine_grid(matrix=matrix)
+        # deform_field = torch.cat([deform_field, torch.ones_like(deform_field[:, :1, ...])], dim=1)
+        # deform_field = torch.einsum("nji, nihwd -> njhwd", matrix, deform_field)
+
+        deform_field = deform_field[:, :3, ...] - self.sp_tr_img.grid
+        if dtype == "np":
+            return deform_field.detach().cpu().numpy()
+        elif dtype == "torch":
+            return deform_field
 
     def _convert_to_torch(self, data):
         """
@@ -931,11 +978,17 @@ class Registration:
         translations = self._convert_to_torch(translations)
         return self.dr.rigid_transform(images, rotations, translations)
 
-    def deform(self, images, deform_field):
+    def deform(self, images, deform_field, mode="bilinear", padding_mode="zeros", displacement=True):
         """
         Transforms the batch of images according to the deformation field.
+        Args:
+            images (torch.Tensor or np.ndarray): The images to deform. Shape (N, C, x, y, z)
+            deform_field (torch.Tensor or np.ndarray): The deformation field. Shape (N, 3, x, y, z)
+            mode (str): The interpolation mode. Either 'bilinear' or 'nearest'
+            padding_mode (str): The padding mode. Either 'zeros' or 'border'
+            displacement (bool): Whether the deformation field is a displacement field or a deformation field
         """
-        return self.dr.deform(images, deform_field)
+        return self.dr.deform(images, deform_field, mode, padding_mode, displacement)
 
     def get_deform_fields(self, deform_field):
         """
