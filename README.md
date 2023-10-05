@@ -1,5 +1,5 @@
 # MUSTER: Multi Session Temporal Registration
-**MUSTER** is a robust tool designed for the registration and analysis of longitudinal 3D medical images. Built on PyTorch, MUSTER leverages GPU acceleration for fast and efficient processing. For instance, a timeseries of 8 images at a ``[160, 160, 160]`` resolution can typically be processed in just 2 minutes.
+**MUSTER** is a tool designed for the registration of longitudinal 3D medical images. Built on PyTorch, MUSTER leverages GPU acceleration for fast and efficient processing. For instance, a timeseries of 8 images at a ``[160, 160, 160]`` resolution can typically be processed in just 2 minutes.
 
 ![Divergence and Jacobi Determinant](docs/figures/muster_div_detjac.png)
 
@@ -9,8 +9,8 @@ Ensure that Python is installed on your machine. Then execute the following comm
 ```bash
 pip install pymuster
 ```
-## Inctructions
-**MUSTER** can be used in two ways, either as a command line tool or as a Python package
+## Instructions
+**MUSTER** can be used in two ways, either as a command line tool or as a Python package. See the full documentation on: https://crai-ous.github.io/MUSTER 
 
 ### Command Line Interface
 TO BE IMPLEMENTED
