@@ -1,0 +1,30 @@
+name: Building docs
+on:
+  push:
+    branches:
+      - main
+
+jobs:  
+  doc_building:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.11]
+        poetry-version: [1.6.1]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+      - run: poetry install
+      - run: poetry run sphinx-apidoc -o docs ./src/pymuster
+      - run: cd docs && poetry run make html
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_build/html
