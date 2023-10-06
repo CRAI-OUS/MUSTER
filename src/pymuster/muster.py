@@ -306,6 +306,7 @@ class StageRegistration:
 
                     loss = 0
                     image_loss = 0
+                    inv_loss = 0
 
                     # The cumulative deformation fields
                     cum_deform_field_fwd = self._intergate_flow(deform_flow, dir="fwd")  # mm/step
@@ -374,15 +375,16 @@ class StageRegistration:
                             self.n_img - 1 - delta_timestep)
 
                         if self.invertability_penalty > 0:
-                            loss += self.invertability_penalty * self._invertability_loss(
+                            inv_loss += self.invertability_penalty * self._invertability_loss(
                                 cum_deform_field_fwd, cum_deform_field_bwd) * (
                                     self.n_img - 1 - delta_timestep)
 
                     # Normalize with respect to the number of images
                     image_loss /= (self.n_img - 1) * self.n_img
+                    inv_loss /= (self.n_img - 1) * self.n_img
 
                     # Combine the losses
-                    loss += image_loss
+                    loss += image_loss + inv_loss
 
                 if use_autocast:
                     # Propagate the loss and update the parameters
