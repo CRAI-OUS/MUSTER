@@ -7,7 +7,57 @@ import math
 from . import field_calculus
 
 
+class NCC:
+    """Normalized Local Cross Correlation.
+    
+    Args:
+        kernal_size (int): The size of the kernal used for calculating the local mean
+    """
+
+    def __init__(self, kernal_size=7):
+        self.kernal_size = kernal_size
+        self.n = kernal_size**3
+        self.padding = kernal_size // 2
+
+    def loss(self, y_true, y_pred, mask):
+        """
+        Args:
+            y_true (torch.Tensor): The true field
+            y_pred (torch.Tensor): The predicted field
+            mask (torch.Tensor): The mask used for calculating the loss
+        """
+        vox_img = torch.prod(torch.tensor(y_true.shape[2:]))
+
+        y_true_means = torch.nn.functional.avg_pool3d(y_true, self.kernal_size, stride=1, padding=self.padding)
+        y_pred_means = torch.nn.functional.avg_pool3d(y_pred, self.kernal_size, stride=1, padding=self.padding)
+        diff_true = y_true - y_true_means
+        diff_pred = y_pred - y_pred_means
+
+        diff_true_squared = torch.nn.functional.avg_pool3d(
+            diff_true * diff_true, self.kernal_size, stride=1, padding=self.padding)
+        diff_pred_squared = torch.nn.functional.avg_pool3d(
+            diff_pred * diff_pred, self.kernal_size, stride=1, padding=self.padding)
+
+        if mask is not None:
+            diff_true = diff_true * mask
+            diff_pred = diff_pred * mask
+            diff_true_squared = diff_true_squared * mask
+            diff_pred_squared = diff_pred_squared * mask
+
+        # Equvalent to the NCC see: B. Panm (2011) Recent Progress in Digital Image Correlation
+        return 1 / 2.0 * torch.sum(
+            (diff_true / torch.sqrt(diff_true_squared + 0.01) - diff_pred / torch.sqrt(diff_pred_squared + 0.01))**
+            2) / torch.sum(mask)
+
+
 class Fourier:
+    """Spatial jacobian loss using the fourier space.
+    
+    Args:
+        filter_omega (float): The cutoff frequency of the filter
+        image_size (tuple): The size of the image
+        pix_dim (tuple): The pixel dimensions of the image
+    """
 
     def __init__(self, filter_omega, image_size, pix_dim):
         self.filter_omega = filter_omega  #/pix_dim[0]
@@ -50,6 +100,12 @@ class Fourier:
 
 
 class NCCS:
+    """ NCC with Sobel filter.
+    See: https://doi.org/10.3390/app12062828
+    
+    Args:
+        kernal_size (int): The size of the kernal used for calculating the local mean
+    """
 
     def __init__(self, kernal_size=13):
         self.kernal_size = kernal_size
@@ -83,38 +139,6 @@ class NCCS:
 
         return 1 - torch.sum(
             diff_true_pred / torch.sqrt(diff_true_squared * diff_pred_squared + 0.0001)) / torch.sum(mask)
-
-
-class NCC:
-
-    def __init__(self, kernal_size=7):
-        self.kernal_size = kernal_size
-        self.n = kernal_size**3
-        self.padding = kernal_size // 2
-
-    def loss(self, y_true, y_pred, mask):
-        vox_img = torch.prod(torch.tensor(y_true.shape[2:]))
-
-        y_true_means = torch.nn.functional.avg_pool3d(y_true, self.kernal_size, stride=1, padding=self.padding)
-        y_pred_means = torch.nn.functional.avg_pool3d(y_pred, self.kernal_size, stride=1, padding=self.padding)
-        diff_true = y_true - y_true_means
-        diff_pred = y_pred - y_pred_means
-
-        diff_true_squared = torch.nn.functional.avg_pool3d(
-            diff_true * diff_true, self.kernal_size, stride=1, padding=self.padding)
-        diff_pred_squared = torch.nn.functional.avg_pool3d(
-            diff_pred * diff_pred, self.kernal_size, stride=1, padding=self.padding)
-
-        if mask is not None:
-            diff_true = diff_true * mask
-            diff_pred = diff_pred * mask
-            diff_true_squared = diff_true_squared * mask
-            diff_pred_squared = diff_pred_squared * mask
-
-        # Equvalent to the NCC see: B. Panm (2011) Recent Progress in Digital Image Correlation
-        return 1 / 2.0 * torch.sum(
-            (diff_true / torch.sqrt(diff_true_squared + 0.01) - diff_pred / torch.sqrt(diff_pred_squared + 0.01))**
-            2) / torch.sum(mask)
 
 
 class WNCC:
