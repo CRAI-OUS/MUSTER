@@ -10,11 +10,11 @@ Welcome to pymuster's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-      introduction
-      installation
-      usage
-      cli_reference
-      api_reference
+   introduction
+   installation
+   usage
+   cli_reference
+   api_reference
 
 
 Indices and tables
