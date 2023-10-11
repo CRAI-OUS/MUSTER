@@ -90,6 +90,7 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#pymuster.core.utils.VectorPearsonCorrelation"><code class="docutils literal notranslate"><span class="pre">VectorPearsonCorrelation()</span></code></a></li>
+<li><a class="reference internal" href="#pymuster.core.utils.get_dig_ind"><code class="docutils literal notranslate"><span class="pre">get_dig_ind()</span></code></a></li>
 <li><a class="reference internal" href="#pymuster.core.utils.grid"><code class="docutils literal notranslate"><span class="pre">grid()</span></code></a></li>
 </ul>
 </li>
@@ -194,6 +195,16 @@
 <dt class="sig sig-object py" id="pymuster.core.losses.Fourier">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">Fourier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.Fourier" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Spatial jacobian loss using the fourier space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filter_omega</strong> (<em>float</em>) – The cutoff frequency of the filter</p></li>
+<li><p><strong>image_size</strong> (<em>tuple</em>) – The size of the image</p></li>
+<li><p><strong>pix_dim</strong> (<em>tuple</em>) – The pixel dimensions of the image</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymuster.core.losses.Fourier.filter">
 <span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.Fourier.filter" title="Link to this definition"></a></dt>
@@ -233,10 +244,25 @@
 <dt class="sig sig-object py" id="pymuster.core.losses.NCC">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">NCC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernal_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.NCC" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Normalized Local Cross Correlation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kernal_size</strong> (<em>int</em>) – The size of the kernal used for calculating the local mean</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymuster.core.losses.NCC.loss">
 <span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.NCC.loss" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>torch.Tensor</em>) – The true field</p></li>
+<li><p><strong>y_pred</strong> (<em>torch.Tensor</em>) – The predicted field</p></li>
+<li><p><strong>mask</strong> (<em>torch.Tensor</em>) – The mask used for calculating the loss</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -244,6 +270,13 @@
 <dt class="sig sig-object py" id="pymuster.core.losses.NCCS">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">NCCS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernal_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.NCCS" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>NCC with Sobel filter.
+See: <a class="reference external" href="https://doi.org/10.3390/app12062828">https://doi.org/10.3390/app12062828</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kernal_size</strong> (<em>int</em>) – The size of the kernal used for calculating the local mean</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymuster.core.losses.NCCS.loss">
 <span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.NCCS.loss" title="Link to this definition"></a></dt>
@@ -309,6 +342,12 @@
 <dd><p>Calculates the Pearson correlation between two vectors sets
 :param x: (num_samples, num_features)
 :param y: (num_samples, num_features)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymuster.core.utils.get_dig_ind">
+<span class="sig-prename descclassname"><span class="pre">pymuster.core.utils.</span></span><span class="sig-name descname"><span class="pre">get_dig_ind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.utils.get_dig_ind" title="Link to this definition"></a></dt>
+<dd><p>Returns the indices of the diagonal elements of the offset diagonal matrices.</p>
 </dd></dl>
 
 <dl class="py function">
