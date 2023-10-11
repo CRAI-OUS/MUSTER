@@ -79,3 +79,16 @@ def VectorPearsonCorrelation(x, y):
 
     pcc = torch.sum(diff_x * diff_y) / (sigma_x * sigma_y)
     return pcc
+
+
+def get_dig_ind(N, offset):
+    """Returns the indices of the diagonal elements of the offset diagonal matrices.
+    """
+    if offset == 0:
+        return np.diag_indices(N)
+    indices = np.array(np.diag_indices(N - np.abs(offset)))
+    if offset > 0:
+        indices[1] += offset
+    else:
+        indices[0] -= offset
+    return (indices[0], indices[1])

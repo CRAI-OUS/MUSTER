@@ -1,5 +1,9 @@
-"""Multi Session Temportal Registration
-This module is the core  of Multi Session Temportal Registration (MUSTER).
+"""Multi Session Temporal Registration.
+
+This module is the core of Multi Session Temporal Registration (MUSTER).
+
+Classes:
+    StageRegistration: Register a longitudinal series of images using a series of deformation fields using a single resolution.
 
 """
 
@@ -19,7 +23,7 @@ import warnings
 
 
 class StageRegistration:
-    r"""Register a longitudinal series of images using a series of deformation fields using a single resolution.
+    """Register a longitudinal series of images using a series of deformation fields using a single resolution.
 
     The images must be in the same space and must be pre-registered using an rigid or affine transformation.
 
@@ -58,29 +62,31 @@ class StageRegistration:
 
     Args:
         image_size (tuple): The size of the input images in the format ``(x, y, z)``.
-        pix_dim (tuple): The pixel dimensions of the input images in the format ``(dx, dy, dz)``.
+        pix_dim (tuple): The pixel dimensions of the input images in the format ``(dx, dy, dz)``. Default is ``(1, 1, 1)``.
         deform_res_scale (int): The resolution scale of the deformation field. The deformation field will have a 
-            resolution of image_size/deform_res_scale.
-        device (str): The device to use for computation. ('cpu' or 'cuda:n' or torch.device object)
-        num_iterations (int): Number of optimization iterations.
-        spatial_smoothness_penalty (float): Weight for spatial smoothness in loss function.
-        temporal_smoothness_penalty (float): Weight for temporal smoothness in loss function.
-        invertability_penalty (float): Weight for invertibility penalty in loss function.
-        l2_penalty (float): Weight for L2 penalty on the deformation flow.
-        smoothing_sigma (float): Sigma for Gaussian smoothing of deformation flows.
-        intergration_steps (int): The number of integration steps for integrating deformation flow.
+            resolution of image_size/deform_res_scale. Default is ``1``.
+        device (str): The device to use for computation. ('cpu' or 'cuda:n' or torch.device object). Default is ``"cpu"``.
+        num_iterations (int): Number of optimization iterations. Default is ``100``.
+        spatial_smoothness_penalty (float): Weight for spatial smoothness in loss function. Default is ``1.0``.
+        temporal_smoothness_penalty (float): Weight for temporal smoothness in loss function. Default is ``1.0``.
+        invertability_penalty (float): Weight for invertibility penalty in loss function. Default is ``1.0``.
+        l2_penalty (float): Weight for L2 penalty on the deformation flow. Default is ``0.0``.
+        smoothing_sigma (float): Sigma for Gaussian smoothing of deformation flows. Default is ``1.0``.
+        mode (str): The mode for interpolation of the images. ('nearest', 'bilinear', or 'bicubic'). Default is ``"bilinear"``.
+        intergration_steps (int): The number of integration steps for integrating deformation flow. Default is ``7``.
         integration_method (str): The method for integrating deformation field.
-            ('ss', 'euler', 'rk4', 'euler_time', or 'rk4')
+            ('ss', 'euler', 'rk4', 'euler_time', or 'rk4'). Default is ``"ss"``.
         field_composition_method (str): The method for composing deformation fields.
-            ('interpolate' or 'flow_continuation')
-        rigid (bool): Flag for including rigid registration.
-        learning_rate (float): Learning rate for optimizer.
-        betas (tuple): The beta coefficients for Adam optimizer.
-        tol (float): Tolerance for optimization convergence.
-        img_similarity_metric (str): The image similarity metric ('NCC', 'L2', 'NCCS', 'WNCC', 'GaussNCC', or 'Fourier')
+            ('interpolate' or 'flow_continuation'). Default is ``"interpolate"``.
+        rigid (bool): Flag for including rigid registration. Default is ``False``.
+        learning_rate (float): Learning rate for optimizer. Default is ``1e-3``.
+        betas (tuple): The beta coefficients for Adam optimizer. Default is ``(0.9, 0.999)``.
+        tol (float): Tolerance for optimization convergence. Default is ``1e-4``.
+        img_similarity_metric (str): The image similarity metric ('NCC', 'L2', 'NCCS', 'WNCC', 'GaussNCC', or 'Fourier').
+            Default is ``"NCC"``.
         img_similarity_spatial_size (int/float): Size or standard deviation of the local neighborhood for the image 
-            similarity metric.
-        verbose (bool): Flag for printing progress during optimization.
+            similarity metric. Default is ``3``.
+        verbose (bool): Flag for printing progress during optimization. Default is ``True``.
     """
 
     def __init__(
@@ -90,22 +96,22 @@ class StageRegistration:
         deform_res_scale: int = 1,
         device: str = "cpu",
         num_iterations: int = 100,
-        spatial_smoothness_penalty: float = 0.3,
-        temporal_smoothness_penalty: float = 0.3,
+        spatial_smoothness_penalty: float = 1.0,
+        temporal_smoothness_penalty: float = 1.0,
         invertability_penalty: float = 1.0,
-        l2_penalty: float = 0.001,
-        smoothing_sigma: float = 0.0,
-        intergration_steps: int = 8,
+        l2_penalty: float = 0.0,
+        smoothing_sigma: float = 1.0,
+        mode: str = "bilinear",
+        intergration_steps: int = 7,
         integration_method: str = "ss",
         field_composition_method: str = "interpolate",
         rigid: bool = False,
-        learning_rate: float = 0.1,
-        betas: tuple = (0.90, 0.999),
+        learning_rate: float = 1e-3,
+        betas: tuple = (0.9, 0.999),
         tol: float = 1e-4,
-        img_similarity_metric: str = "Fourier",
-        img_similarity_spatial_size: int = 3,
-        mode: str = "bilinear",
-        verbose: bool = False,
+        img_similarity_metric: str = "NCC",
+        img_similarity_spatial_size: int or float = 3,
+        verbose: bool = True,
     ):
         # Valid values for integration_method
         valid_integration_methods = ["ss", "euler", "rk4", "euler_time", "rk4_time"]
@@ -184,20 +190,18 @@ class StageRegistration:
         initial_translations=None,
         masks=None,
     ):
-        """
-        Fits the deformation flow to the images.
+        """Fits the deformation flow to the images.
 
         Args:
-            images torch.Tensor or np.ndarray): shape ``(timesteps, channels, x, y, z)``
-            inital_deform_flow (torch.Tensor or np.ndarray): shape ``(timesteps-1, 3, x, y, z)``
-            timepoints (torch.Tensor or np.ndarray): shape ``(time,)``
+            images (torch.Tensor or np.ndarray): shape ``(N, channels, x, y, z)``
+            inital_deform_flow (torch.Tensor or np.ndarray): shape ``(N-1, 3, x, y, z)``
+            timepoints (torch.Tensor or np.ndarray): shape ``(N,)``
                 The timepoints of the images. Used to adjust the temporal
                 penalties. May be None, in which case the timepoints are
                 assumed to be equally spaced.
 
         Returns:
-            deform_flow: [torch.Tensor] shape (timesteps, 3, x, y, z)
-                The deformation flow that was fitted to the images. The units of the deformation is mm/deltatime.
+            out (dict): Dictionary containing the deformation flow and optionally the rotations and translations.
         """
 
         self.n_img = images.shape[0]  # Number of images
@@ -617,8 +621,8 @@ class StageRegistration:
         deform_field_fwd,
         deform_field_bwd,
     ):
-        """
-            Adds the integral of the deformation flow to the cumulative deformation fields.
+        """Adds the integral of the deformation flow to the cumulative deformation fields.
+        
             If ``field_composition_method`` is set to ``interpolate``, the composition is done by interpolation of 
             the consecutive deformation fields with the cumulative deformation fields.
             If ``field_composition_method`` is set to ``flow_continuation``, the composition is done by integrating 
@@ -672,8 +676,7 @@ class StageRegistration:
         return cum_deform_field_fwd, cum_deform_field_bwd
 
     def _gaussian_smooth(self, field, sigma):
-        """
-        Smooths the deformation field with a Gaussian filter in the Fourier domain.
+        """Smooths the deformation field with a Gaussian filter in the Fourier domain.
 
         Args:
             field (torch.Tensor): The deformation field to be smoothed.
@@ -697,15 +700,18 @@ class StageRegistration:
         return field_filtered
 
     def get_deform_fields(self, deform_flow):
-        """
-        Computes the all deformation fields from the deformation flow.
+        """Computes the all deformation fields from the deformation flow.
+        
         The deformations are organized in a matrix such that the deformation from the deformation that distortes 
         image_i to image_j is given by deform_matrix[j, i]. Another way of viewing the matrix is that the 
         the displacment at time t_j of a particle starting at the identity grid in image_i is given with
         deform_matrix[i, j]. 
         
         Args:
-            deform_flow (torch.Tensor or np.ndarray): The deformation flow. Shape (N, 3, x, y, z)
+            deform_flow (torch.Tensor or np.ndarray): The deformation flow. Shape ``(N, 3, x, y, z)``
+            
+        Returns:
+            torch.Tensor or np.ndarray: The deformation fields. Shape ``(N, N, 3, x, y, z)``
         """
         # Get the type of the output
         if isinstance(deform_flow, np.ndarray):
@@ -723,8 +729,8 @@ class StageRegistration:
             deform_field_fwd = self._intergate_flow(deform_flow, "fwd")
             deform_field_bwd = self._intergate_flow(deform_flow, "bwd")
 
-            deform_matrix[_get_dig_ind(self.n_img, 1)] = deform_field_fwd
-            deform_matrix[_get_dig_ind(self.n_img, -1)] = deform_field_bwd
+            deform_matrix[utils.get_dig_ind(self.n_img, 1)] = deform_field_fwd
+            deform_matrix[utils.get_dig_ind(self.n_img, -1)] = deform_field_bwd
 
             cum_deform_field_fwd = deform_field_fwd
             cum_deform_field_bwd = deform_field_bwd
@@ -735,8 +741,8 @@ class StageRegistration:
                     cum_deform_field_bwd,
                 ) = self._commute_deform_fields(cum_deform_field_fwd, cum_deform_field_bwd, deform_flow, delta_timestep,
                                                 deform_field_fwd, deform_field_bwd)
-                deform_matrix[_get_dig_ind(self.n_img, delta_timestep + 1)] = cum_deform_field_fwd
-                deform_matrix[_get_dig_ind(self.n_img, -delta_timestep - 1)] = cum_deform_field_bwd
+                deform_matrix[utils.get_dig_ind(self.n_img, delta_timestep + 1)] = cum_deform_field_fwd
+                deform_matrix[utils.get_dig_ind(self.n_img, -delta_timestep - 1)] = cum_deform_field_bwd
 
         if dtype == "np":
             return deform_matrix.detach().cpu().numpy()
@@ -744,12 +750,17 @@ class StageRegistration:
             return deform_matrix
 
     def deform(self, images, deform_field, mode="bilinear", padding_mode="zeros", displacement=True):
-        """
-        Transforms the batch of images according to the deformation field.
+        """Transforms the batch of images according to the deformation field.
         
         Args:
-            images (torch.Tensor or np.ndarray): The images to deform. Shape (N, C, x, y, z)
-            deform_field (torch.Tensor or np.ndarray): The deformation field. Shape (N, 3, x, y, z)
+            images (torch.Tensor or np.ndarray): The images to deform. Shape ``(N, C, x, y, z)``
+            deform_field (torch.Tensor or np.ndarray): The deformation field. Shape ``(N, 3, x, y, z)``
+            mode (str, optional): The interpolation mode. Either 'bilinear' or 'nearest'.
+            padding_mode (str, optional): The padding mode. Either 'zeros' or 'border'.
+            displacement (bool, optional): Whether the deformation field is a displacement field or a deformation field.
+            
+        Returns:
+            torch.Tensor or np.ndarray: The deformed images. Shape ``(N, C, x, y, z)``
         """
         if isinstance(images, np.ndarray):
             dtype = "np"
@@ -822,13 +833,12 @@ class StageRegistration:
 
 
 class Registration:
-    """Multi Stage Temporal Registration
-    Registrates the images in multiple stages. The images are first registrated at a low resolution and then the
+    """Multi Stage Temporal Registration.
+    Registrates a series of images. The images are first registrated at a low resolution and then the
     resolution is increased and the images are registrated again. At each resolution the deformation field is
     has a resolution relative to the resampled image resolution set by ``deform_res_scale``.
     
-    
-    Accepts same arguments as :class:`DeformableRegistration` but :attr:`iterations` is replaced by 
+    Accepts same arguments as :class:`StageRegistration` but :attr:`iterations` is replaced by 
     :attr:`stages_iterations`, attr:`deform_res_scale` is replaced by :attr:`stages_deform_scales`, and
     :attr:`image_size` is replaced by :attr:`stages_img_scales`.
     
@@ -840,7 +850,7 @@ class Registration:
         >>>     stages_deform_scales=[4, 2, 2],
         >>>     image_size=[128, 128, 128],
         >>>     pix_dim=[1, 1, 1],
-        >>>     device="cuda",
+        >>>     device="cuda:0",
         >>> )
         >>> out = deform_reg.fit(images)
     This example will registrate the image first at a resolution of ``[32, 32, 32]`` with a deformation grid of 
@@ -850,9 +860,9 @@ class Registration:
     See :class:`StageRegistration` for more information about the arguments.
     
     Args:
-        stages_iterations: list of number of iterations for each stage
-        stages_img_scales: list of image rescaling factors for each stage
-        stages_deform_scales: list of deformation rescaling factors for each stage relative to the image rescaling factor
+        stages_iterations (list of int): Number of iterations for each stage.
+        stages_img_scales (list of int): Image rescaling factors for each stage.
+        stages_deform_scales (list of int): Deformation rescaling factors for each stage relative to the image rescaling factor.
         """
 
     def __init__(self, stages_iterations: list, stages_img_scales: list, stages_deform_scales: list, **kwargs):
@@ -896,8 +906,8 @@ class Registration:
         Fits the registration model to the images
         Args:.
             - images (numpy.ndarray or torch.Tensor): The images to registrate. Shape (N, C, x, y, z)
-            - timepoints (numpy.ndarray or torch.Tensor, Optional): The timepoints of the images. Shape (N,)
-            - masks (numpy.ndarray or torch.Tensor, Optional): The masks of the images. Shape (N, C, x, y, z)
+            - timepoints (numpy.ndarray or torch.Tensor, optional): The timepoints of the images. Shape (N,)
+            - masks (numpy.ndarray or torch.Tensor, optional): The masks of the images. Shape (N, C, x, y, z)
 
         Returns:
             dict: A dictionary containing the deformation field, rotations and translations.
@@ -981,32 +991,45 @@ class Registration:
         return self.dr.rigid_transform(images, rotations, translations)
 
     def deform(self, images, deform_field, mode="bilinear", padding_mode="zeros", displacement=True):
-        """
-        Transforms the batch of images according to the deformation field.
+        """Transforms the batch of images according to the deformation field.
+        
         Args:
-            images (torch.Tensor or np.ndarray): The images to deform. Shape (N, C, x, y, z)
-            deform_field (torch.Tensor or np.ndarray): The deformation field. Shape (N, 3, x, y, z)
-            mode (str): The interpolation mode. Either 'bilinear' or 'nearest'
-            padding_mode (str): The padding mode. Either 'zeros' or 'border'
-            displacement (bool): Whether the deformation field is a displacement field or a deformation field
+            images (torch.Tensor or np.ndarray): The images to deform. Shape ``(N, C, x, y, z)``
+            deform_field (torch.Tensor or np.ndarray): The deformation field. Shape ``(N, 3, x, y, z)``
+            mode (str, optional): The interpolation mode. Either 'bilinear' or 'nearest'.
+            padding_mode (str, optional): The padding mode. Either 'zeros' or 'border'.
+            displacement (bool, optional): Whether the deformation field is a displacement field or a deformation field.
+            
+        Returns:
+            torch.Tensor or np.ndarray: The deformed images. Shape ``(N, C, x, y, z)``
         """
         return self.dr.deform(images, deform_field, mode, padding_mode, displacement)
 
-    def get_deform_fields(self, deform_field):
+    def get_deform_fields(self, deform_flow):
+        """Computes the all deformation fields from the deformation flow.
+        
+        The deformations are organized in a matrix such that the deformation from the deformation that distortes 
+        image_i to image_j is given by deform_matrix[j, i]. Another way of viewing the matrix is that the 
+        the displacment at time t_j of a particle starting at the identity grid in image_i is given with
+        deform_matrix[i, j]. 
+        
+        Args:
+            deform_flow (torch.Tensor or np.ndarray): The deformation flow. Shape ``(N, 3, x, y, z)``
+            
+        Returns:
+            torch.Tensor or np.ndarray: The deformation fields. Shape ``(N, N, 3, x, y, z)``
         """
-        Returns the cumulative deformation fields for each timepoint.
-        returns a matrix CDM of size (N, N, 3, *image_size) such that CDM[i, j, :, :] is the deformation field from image i to image j.
-        """
-        if isinstance(deform_field, np.ndarray):
+
+        if isinstance(deform_flow, np.ndarray):
             dtype = "np"
-        elif isinstance(deform_field, torch.Tensor):
+        elif isinstance(deform_flow, torch.Tensor):
             dtype = "torch"
         else:
             raise TypeError("deform_field must be either numpy array or torch tensor")
 
-        deform_field = self._convert_to_torch(deform_field)
+        deform_flow = self._convert_to_torch(deform_flow)
         if self.deform_scales[-1] != 1:
-            deform_matrix = self.dr.get_deform_fields(deform_field)
+            deform_matrix = self.dr.get_deform_fields(deform_flow)
             n_img = deform_matrix.shape[0]
             deform_matrix = nn.functional.interpolate(
                 deform_matrix.reshape((-1, 3, *self.deform_sizes[-1])),
@@ -1021,7 +1044,7 @@ class Registration:
                 *self.image_size,
             ))
         else:
-            deform_matrix = self.dr.get_deform_fields(deform_field)
+            deform_matrix = self.dr.get_deform_fields(deform_flow)
 
         if dtype == "np":
             return deform_matrix.detach().cpu().numpy()
@@ -1029,8 +1052,13 @@ class Registration:
             return deform_matrix
 
     def _convert_to_torch(self, data):
-        """
-        Converts the data to torch tensor.
+        """Converts the data to torch tensor.
+        
+        Args:
+            data (numpy.ndarray or torch.Tensor): The data to convert.
+            
+        Returns:
+            torch.Tensor: The data converted to torch tensor.
         """
         if isinstance(data, np.ndarray):
             return torch.from_numpy(data).to(dtype=torch.float32, device=self.device)
@@ -1044,9 +1072,10 @@ class Registration:
 
 
 class SpatialTransformer(nn.Module):
-    r""" Spatial Transformer for performing grid pull operations on spaces
-    Based on https://github.com/voxelmorph/voxelmorph
-
+    r""" Spatial Transformer for performing grid pull operations on spaces.
+    Based on https://github.com/voxelmorph/voxelmorph. The spatial transformer uses a deformation field to deform
+    the input space. The deformation field is given in mm/step. 
+    
     Args:
         size (tuple): the target size of the output tensor. shape ``(x, y, z)``
         pix_dim (tuple): the pixel spacing (mm/px) of the output tensor ``(dx, dy, dz)``
@@ -1071,13 +1100,16 @@ class SpatialTransformer(nn.Module):
         grid = grid.type(torch.float)
         self.register_buffer("grid", grid)
 
-    def forward(self, src, transformation_field, displacement=True):
-        r"""Deforms the scr image with the transformation field with units in mm/step
+    def forward(self, field, transformation_field, displacement=True):
+        r"""Deforms the field image with the transformation field with units in mm/step.
 
             Args:
-                src: the source space to be transformed
+                field: the source space to be transformed
                 transformation_field: the transformation field to be applied to the source image, with units in mm/step
                 displacement: whether the transformation field is a displacement field or a deformation field
+                
+            Returns:
+                torch.Tensor: the transformed source image
             """
 
         if displacement:
@@ -1097,23 +1129,9 @@ class SpatialTransformer(nn.Module):
             new_locs = new_locs[..., [2, 1, 0]]
 
         return F.grid_sample(
-            src,
+            field,
             new_locs,
             align_corners=True,
             mode=self.mode,
             padding_mode=self.padding_mode,
         )
-
-
-def _get_dig_ind(N, offset):
-    """
-    Returns the indices of the diagonal elements of the offset diagonal matrices.
-    """
-    if offset == 0:
-        return np.diag_indices(N)
-    indices = np.array(np.diag_indices(N - np.abs(offset)))
-    if offset > 0:
-        indices[1] += offset
-    else:
-        indices[0] -= offset
-    return (indices[0], indices[1])
