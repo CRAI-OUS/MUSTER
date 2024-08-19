@@ -12,7 +12,7 @@ Welcome to pymuster's documentation!
 
    introduction
    installation
-   usage
+   quickstart
    cli_reference
    api_reference
 

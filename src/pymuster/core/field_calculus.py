@@ -48,7 +48,6 @@ def jacobian(x, pix_dim=(1.0, 1.0, 1.0), filter=False, midpoint=False):
 
     return J
 
-
 def curl(J):
     """
     Returns the curl of a 3D field
