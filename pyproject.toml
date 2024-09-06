@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "pymuster"
-version = "0.1.7"
+version = "0.1.8"
 description = "A registration tool for medical images"
 authors = ["Edvard Grødem <edvard.grodem@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/CRAI-OUS/MUSTER"
 keywords = ["registration", "medical", "MRI", "CT", "PET", "SPECT", "non-rigid", "deformation"]
-packages = [{include = "src/pymuster"}]
+packages = [{include = "pymuster", from = "src"}]
 
 
 [tool.poetry.dependencies]
