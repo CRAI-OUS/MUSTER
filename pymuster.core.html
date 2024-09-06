@@ -14,7 +14,7 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=fd825880"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -40,65 +40,15 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">pymuster.core package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-pymuster.core.field_calculus">pymuster.core.field_calculus module</a><ul>
-<li><a class="reference internal" href="#pymuster.core.field_calculus.curl"><code class="docutils literal notranslate"><span class="pre">curl()</span></code></a></li>
-<li><a class="reference internal" href="#pymuster.core.field_calculus.determinant"><code class="docutils literal notranslate"><span class="pre">determinant()</span></code></a></li>
-<li><a class="reference internal" href="#pymuster.core.field_calculus.divergence"><code class="docutils literal notranslate"><span class="pre">divergence()</span></code></a></li>
-<li><a class="reference internal" href="#pymuster.core.field_calculus.forward_alpha"><code class="docutils literal notranslate"><span class="pre">forward_alpha()</span></code></a></li>
-<li><a class="reference internal" href="#pymuster.core.field_calculus.integrate_forward_flow"><code class="docutils literal notranslate"><span class="pre">integrate_forward_flow()</span></code></a></li>
-<li><a class="reference internal" href="#pymuster.core.field_calculus.jacobian"><code class="docutils literal notranslate"><span class="pre">jacobian()</span></code></a></li>
-<li><a class="reference internal" href="#pymuster.core.field_calculus.laplacian"><code class="docutils literal notranslate"><span class="pre">laplacian()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli_reference.html">Comand Line Iterface Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
 </ul>
-</li>
-<li><a class="reference internal" href="#module-pymuster.core.losses">pymuster.core.losses module</a><ul>
-<li><a class="reference internal" href="#pymuster.core.losses.Fourier"><code class="docutils literal notranslate"><span class="pre">Fourier</span></code></a><ul>
-<li><a class="reference internal" href="#pymuster.core.losses.Fourier.filter"><code class="docutils literal notranslate"><span class="pre">Fourier.filter()</span></code></a></li>
-<li><a class="reference internal" href="#pymuster.core.losses.Fourier.loss"><code class="docutils literal notranslate"><span class="pre">Fourier.loss()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pymuster.core.losses.GaussNCC"><code class="docutils literal notranslate"><span class="pre">GaussNCC</span></code></a><ul>
-<li><a class="reference internal" href="#pymuster.core.losses.GaussNCC.loss"><code class="docutils literal notranslate"><span class="pre">GaussNCC.loss()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pymuster.core.losses.MSE"><code class="docutils literal notranslate"><span class="pre">MSE</span></code></a><ul>
-<li><a class="reference internal" href="#pymuster.core.losses.MSE.loss"><code class="docutils literal notranslate"><span class="pre">MSE.loss()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pymuster.core.losses.NCC"><code class="docutils literal notranslate"><span class="pre">NCC</span></code></a><ul>
-<li><a class="reference internal" href="#pymuster.core.losses.NCC.loss"><code class="docutils literal notranslate"><span class="pre">NCC.loss()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pymuster.core.losses.NCCS"><code class="docutils literal notranslate"><span class="pre">NCCS</span></code></a><ul>
-<li><a class="reference internal" href="#pymuster.core.losses.NCCS.loss"><code class="docutils literal notranslate"><span class="pre">NCCS.loss()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pymuster.core.losses.WNCC"><code class="docutils literal notranslate"><span class="pre">WNCC</span></code></a><ul>
-<li><a class="reference internal" href="#pymuster.core.losses.WNCC.loss"><code class="docutils literal notranslate"><span class="pre">WNCC.loss()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pymuster.core.utils">pymuster.core.utils module</a><ul>
-<li><a class="reference internal" href="#pymuster.core.utils.RunningMeanVar"><code class="docutils literal notranslate"><span class="pre">RunningMeanVar</span></code></a><ul>
-<li><a class="reference internal" href="#pymuster.core.utils.RunningMeanVar.add"><code class="docutils literal notranslate"><span class="pre">RunningMeanVar.add()</span></code></a></li>
-<li><a class="reference internal" href="#pymuster.core.utils.RunningMeanVar.mean"><code class="docutils literal notranslate"><span class="pre">RunningMeanVar.mean()</span></code></a></li>
-<li><a class="reference internal" href="#pymuster.core.utils.RunningMeanVar.var"><code class="docutils literal notranslate"><span class="pre">RunningMeanVar.var()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pymuster.core.utils.VectorPearsonCorrelation"><code class="docutils literal notranslate"><span class="pre">VectorPearsonCorrelation()</span></code></a></li>
-<li><a class="reference internal" href="#pymuster.core.utils.get_dig_ind"><code class="docutils literal notranslate"><span class="pre">get_dig_ind()</span></code></a></li>
-<li><a class="reference internal" href="#pymuster.core.utils.grid"><code class="docutils literal notranslate"><span class="pre">grid()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pymuster.core">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -219,12 +169,63 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pymuster.core.losses.GaussNCC">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">GaussNCC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.GaussNCC" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">GaussNCC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduce</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_invariant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.GaussNCC" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymuster.core.losses.GaussNCC.loss">
-<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.GaussNCC.loss" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.GaussNCC.loss" title="Link to this definition"></a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pymuster.core.losses.GroupVELLN">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">GroupVELLN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernal_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gaussian'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(256,</span> <span class="pre">256,</span> <span class="pre">256)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.GroupVELLN" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Variance Estimating Local Linear compansated Normal distribution loss</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kernal_size</strong> (<em>int</em>) – The size of the kernal used for calculating the local mean</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.GroupVELLN.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.GroupVELLN.loss" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>torch.Tensor</em>) – The true field</p></li>
+<li><p><strong>y_pred</strong> (<em>torch.Tensor</em>) – The predicted field</p></li>
+<li><p><strong>mask</strong> (<em>torch.Tensor</em>) – The mask used for calculating the loss</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pymuster.core.losses.LogLinLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">LogLinLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernal_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gaussian'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(256,</span> <span class="pre">256,</span> <span class="pre">256)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.LogLinLoss" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Assuming I_ix = a_i I_x e find the I_ix that maximizes the likelihood of this model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kernal_size</strong> (<em>int</em>) – The size of the kernal used for calculating the local mean</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.LogLinLoss.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.LogLinLoss.loss" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>images</strong> (<em>torch.Tensor</em>) – the images warped to the same space</p></li>
+<li><p><strong>mask</strong> (<em>torch.Tensor</em>) – The mask used for calculating the loss</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -235,14 +236,43 @@
 <p>Mean squared error loss.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymuster.core.losses.MSE.loss">
-<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.MSE.loss" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.MSE.loss" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pymuster.core.losses.MutualInformation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">MutualInformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduce</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.MutualInformation" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.MutualInformation.getMutualInformation">
+<span class="sig-name descname"><span class="pre">getMutualInformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.MutualInformation.getMutualInformation" title="Link to this definition"></a></dt>
+<dd><p>input1: B, C, H, W, D
+input2: B, C, H, W, D</p>
+<p>return: scalar</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.MutualInformation.jointPdf">
+<span class="sig-name descname"><span class="pre">jointPdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernel_values1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_values2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.MutualInformation.jointPdf" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.MutualInformation.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.MutualInformation.loss" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymuster.core.losses.MutualInformation.marginalPdf">
+<span class="sig-name descname"><span class="pre">marginalPdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.MutualInformation.marginalPdf" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pymuster.core.losses.NCC">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">NCC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernal_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.NCC" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">NCC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernal_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduce</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_invariant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.NCC" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Normalized Local Cross Correlation.</p>
 <dl class="field-list simple">
@@ -252,7 +282,7 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymuster.core.losses.NCC.loss">
-<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.NCC.loss" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.NCC.loss" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -285,15 +315,35 @@ See: <a class="reference external" href="https://doi.org/10.3390/app12062828">ht
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="pymuster.core.losses.WNCC">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">WNCC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernal_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.WNCC" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymuster.core.losses.VELLN">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">VELLN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernal_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gaussian'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(256,</span> <span class="pre">256,</span> <span class="pre">256)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.VELLN" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Variance Estimating Local Linear compansated Normal distribution loss</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kernal_size</strong> (<em>int</em>) – The size of the kernal used for calculating the local mean</p>
+</dd>
+</dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pymuster.core.losses.WNCC.loss">
-<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.WNCC.loss" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="pymuster.core.losses.VELLN.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.VELLN.loss" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>torch.Tensor</em>) – The true field</p></li>
+<li><p><strong>y_pred</strong> (<em>torch.Tensor</em>) – The predicted field</p></li>
+<li><p><strong>mask</strong> (<em>torch.Tensor</em>) – The mask used for calculating the loss</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymuster.core.losses.fourier_filter">
+<span class="sig-prename descclassname"><span class="pre">pymuster.core.losses.</span></span><span class="sig-name descname"><span class="pre">fourier_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-3,</span> <span class="pre">-2,</span> <span class="pre">-1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.core.losses.fourier_filter" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-pymuster.core.utils">

@@ -13,7 +13,7 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=fd825880"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
@@ -39,8 +39,15 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli_reference.html">Comand Line Iterface Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -82,7 +89,6 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#V"><strong>V</strong></a>
- | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -94,11 +100,17 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pymuster.html#pymuster.muster.StageRegistration.add_linear_transform">add_linear_transform() (pymuster.muster.StageRegistration method)</a>
 </li>
+      <li><a href="pymuster.html#pymuster.muster.AffineRegistration">AffineRegistration (class in pymuster.muster)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pymuster.html#pymuster.muster.AffineRegistration.combine_affine_matrices">combine_affine_matrices() (pymuster.muster.AffineRegistration method)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pymuster.core.html#pymuster.core.field_calculus.curl">curl() (in module pymuster.core.field_calculus)</a>
 </li>
@@ -128,9 +140,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pymuster.core.html#pymuster.core.losses.Fourier.filter">filter() (pymuster.core.losses.Fourier method)</a>
 </li>
-      <li><a href="pymuster.html#pymuster.muster.Registration.fit">fit() (pymuster.muster.Registration method)</a>
+      <li><a href="pymuster.html#pymuster.muster.AffineRegistration.fit">fit() (pymuster.muster.AffineRegistration method)</a>
 
       <ul>
+        <li><a href="pymuster.html#pymuster.muster.Registration.fit">(pymuster.muster.Registration method)</a>
+</li>
         <li><a href="pymuster.html#pymuster.muster.StageRegistration.fit">(pymuster.muster.StageRegistration method)</a>
 </li>
       </ul></li>
@@ -141,6 +155,8 @@
       <li><a href="pymuster.core.html#pymuster.core.field_calculus.forward_alpha">forward_alpha() (in module pymuster.core.field_calculus)</a>
 </li>
       <li><a href="pymuster.core.html#pymuster.core.losses.Fourier">Fourier (class in pymuster.core.losses)</a>
+</li>
+      <li><a href="pymuster.core.html#pymuster.core.losses.fourier_filter">fourier_filter() (in module pymuster.core.losses)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -156,13 +172,17 @@
         <li><a href="pymuster.html#pymuster.muster.StageRegistration.get_deform_fields">(pymuster.muster.StageRegistration method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pymuster.core.html#pymuster.core.utils.get_dig_ind">get_dig_ind() (in module pymuster.core.utils)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pymuster.html#pymuster.muster.Registration.get_identity_grid">get_identity_grid() (pymuster.muster.Registration method)</a>
 </li>
+      <li><a href="pymuster.core.html#pymuster.core.losses.MutualInformation.getMutualInformation">getMutualInformation() (pymuster.core.losses.MutualInformation method)</a>
+</li>
       <li><a href="pymuster.core.html#pymuster.core.utils.grid">grid() (in module pymuster.core.utils)</a>
+</li>
+      <li><a href="pymuster.core.html#pymuster.core.losses.GroupVELLN">GroupVELLN (class in pymuster.core.losses)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -181,6 +201,10 @@
       <li><a href="pymuster.core.html#pymuster.core.field_calculus.jacobian">jacobian() (in module pymuster.core.field_calculus)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pymuster.core.html#pymuster.core.losses.MutualInformation.jointPdf">jointPdf() (pymuster.core.losses.MutualInformation method)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="L">L</h2>
@@ -190,18 +214,26 @@
 </li>
       <li><a href="pymuster.html#pymuster.muster.StageRegistration.linear_transform">linear_transform() (pymuster.muster.StageRegistration method)</a>
 </li>
+      <li><a href="pymuster.core.html#pymuster.core.losses.LogLinLoss">LogLinLoss (class in pymuster.core.losses)</a>
+</li>
       <li><a href="pymuster.core.html#pymuster.core.losses.Fourier.loss">loss() (pymuster.core.losses.Fourier method)</a>
 
       <ul>
         <li><a href="pymuster.core.html#pymuster.core.losses.GaussNCC.loss">(pymuster.core.losses.GaussNCC method)</a>
 </li>
+        <li><a href="pymuster.core.html#pymuster.core.losses.GroupVELLN.loss">(pymuster.core.losses.GroupVELLN method)</a>
+</li>
+        <li><a href="pymuster.core.html#pymuster.core.losses.LogLinLoss.loss">(pymuster.core.losses.LogLinLoss method)</a>
+</li>
         <li><a href="pymuster.core.html#pymuster.core.losses.MSE.loss">(pymuster.core.losses.MSE method)</a>
+</li>
+        <li><a href="pymuster.core.html#pymuster.core.losses.MutualInformation.loss">(pymuster.core.losses.MutualInformation method)</a>
 </li>
         <li><a href="pymuster.core.html#pymuster.core.losses.NCC.loss">(pymuster.core.losses.NCC method)</a>
 </li>
         <li><a href="pymuster.core.html#pymuster.core.losses.NCCS.loss">(pymuster.core.losses.NCCS method)</a>
 </li>
-        <li><a href="pymuster.core.html#pymuster.core.losses.WNCC.loss">(pymuster.core.losses.WNCC method)</a>
+        <li><a href="pymuster.core.html#pymuster.core.losses.VELLN.loss">(pymuster.core.losses.VELLN method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -210,13 +242,15 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pymuster.core.html#pymuster.core.losses.MutualInformation.marginalPdf">marginalPdf() (pymuster.core.losses.MutualInformation method)</a>
+</li>
       <li><a href="pymuster.core.html#pymuster.core.utils.RunningMeanVar.mean">mean() (pymuster.core.utils.RunningMeanVar method)</a>
 </li>
       <li>
     module
 
       <ul>
-        <li><a href="api_referance.html#module-pymuster">pymuster</a>, <a href="pymuster.html#module-pymuster">[1]</a>
+        <li><a href="api_reference.html#module-pymuster">pymuster</a>, <a href="pymuster.html#module-pymuster">[1]</a>
 </li>
         <li><a href="cli_reference.html#module-pymuster.cli">pymuster.cli</a>, <a href="pymuster.cli.html#module-pymuster.cli">[1]</a>
 </li>
@@ -236,6 +270,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pymuster.core.html#pymuster.core.losses.MSE">MSE (class in pymuster.core.losses)</a>
+</li>
+      <li><a href="pymuster.core.html#pymuster.core.losses.MutualInformation">MutualInformation (class in pymuster.core.losses)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -259,7 +295,7 @@
     pymuster
 
       <ul>
-        <li><a href="api_referance.html#module-pymuster">module</a>, <a href="pymuster.html#module-pymuster">[1]</a>
+        <li><a href="api_reference.html#module-pymuster">module</a>, <a href="pymuster.html#module-pymuster">[1]</a>
 </li>
       </ul></li>
       <li>
@@ -355,13 +391,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pymuster.core.html#pymuster.core.utils.VectorPearsonCorrelation">VectorPearsonCorrelation() (in module pymuster.core.utils)</a>
 </li>
-  </ul></td>
-</tr></table>
-
-<h2 id="W">W</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pymuster.core.html#pymuster.core.losses.WNCC">WNCC (class in pymuster.core.losses)</a>
+      <li><a href="pymuster.core.html#pymuster.core.losses.VELLN">VELLN (class in pymuster.core.losses)</a>
 </li>
   </ul></td>
 </tr></table>
