@@ -160,6 +160,7 @@ class StageRegistration:
         smoothing_sigma: float = 1.0,
         mode: str = "bilinear",
         integration_steps: int = 7,
+        degree_polynomial: int = 2,
         integration_method: str = "euler",
         affine_adjustment: str = "none",
         learning_rate: float = 1e-3,
@@ -200,6 +201,7 @@ class StageRegistration:
         self.l2_penalty = l2_penalty
         self.smoothing_sigma = smoothing_sigma
         self.integration_steps = integration_steps
+        self.degree_polynomial = degree_polynomial
         self.integration_method = integration_method
 
         self.affine_adjustment = affine_adjustment
@@ -231,11 +233,23 @@ class StageRegistration:
         elif self.img_similarity_metric == "VELLN":
             self.img_sim_metric_fnc = losses.GroupVELLN(self.img_similarity_spatial_size, kernal_type='window')
         elif self.img_similarity_metric == "VELLNGAUSS":
+            # self.img_sim_metric_fnc = losses.LogLinLoss(
+            #     self.img_similarity_spatial_size,
+            #     kernal_type='gaussian',
+            #     pix_dim=self.pix_dim,
+            #     image_size=self.image_size)
+            # self.img_sim_metric_fnc = losses.NCC(self.img_similarity_spatial_size, scale_invariant=False)
+
             self.img_sim_metric_fnc = losses.GroupVELLN(
                 self.img_similarity_spatial_size,
                 kernal_type='gaussian',
                 pix_dim=self.pix_dim,
                 image_size=self.image_size)
+            # self.img_sim_metric_fnc = losses.VELLN(
+            #     kernal_size=self.img_similarity_spatial_size,
+            #     kernal_type='gaussian',
+            #     pix_dim=self.pix_dim,
+            #     image_size=self.image_size)
 
         self.sp_tr_img = SpatialTransformer(self.image_size, pix_dim, mode=mode, padding_mode="zeros").to(self.device)
 
@@ -247,6 +261,7 @@ class StageRegistration:
         initial_rotations=None,
         initial_translations=None,
         initial_affine=None,
+        initial_bias_fields=None,
         masks=None,
     ):
         """Fits the deformation flow to the images.
@@ -290,11 +305,11 @@ class StageRegistration:
         # The integral deformation flow
         if inital_deform_flow is None:
             #deform_flow = nn.parameter.Parameter(torch.zeros((self.n_flow, 3, *self.deform_size), device=device))
-            deform_flow = BernsteinPolynomial(2, (1, 3, *self.deform_size)).to(device)
+            deform_flow = BernsteinPolynomial(self.degree_polynomial, (1, 3, *self.deform_size)).to(device)
         else:
             inital_deform_flow = self._convert_to_torch(inital_deform_flow)
             print(inital_deform_flow.shape)
-            deform_flow = BernsteinPolynomial(degree=2, coefficients=inital_deform_flow).to(device)
+            deform_flow = BernsteinPolynomial(degree=self.degree_polynomial, coefficients=inital_deform_flow).to(device)
 
         param_groups = [{"params": [deform_flow.coefficients], "lr": self.learning_rate}]
 
@@ -327,6 +342,14 @@ class StageRegistration:
                 "params": [affine_params],
                 "lr": self.learning_rate * 0.001,
             })
+
+        # Add a bias field similar to Ashburner et al. 2013
+        if initial_bias_fields is None:
+            bias_fields = nn.parameter.Parameter(torch.zeros((self.n_img, 2, *self.image_size), device=device))
+        else:
+            bias_fields = nn.parameter.Parameter(self._convert_to_torch(initial_bias_fields).clone().to(device))
+
+        param_groups.append({"params": [bias_fields], "lr": self.learning_rate * 0.01})
 
         # if self.img_similarity_metric == "VELLN" or self.img_similarity_metric == "VELLNGAUSS":
         #     log_sigmas = nn.parameter.Parameter(torch.ones((self.n_img, 1, 1, 1, 1), device=device) * (-1.0))
@@ -364,6 +387,15 @@ class StageRegistration:
                 # Choose a random timepoint to be the center of the deformation field
                 t_center = torch.rand(
                     (1,), device=device) * (timepoints[-1] - timepoints[0] - dt) + timepoints[0]  # TOFIX
+                # print(f"first: {t_center}")
+                # t_center = torch.tensor([0.01]).to(device)
+                # print(f"second: {t_center}")
+                # Choose a random image as the center of the deformation field
+                # center_idx = torch.randint(0, self.n_img, (1,)).item()
+                # center_idx = 0
+                # t_center = timepoints[[center_idx]]
+
+                # t_center = torch.tensor([0.5]).to(device)
 
                 t_fwd = t_center
                 t_bwd = t_center
@@ -374,8 +406,8 @@ class StageRegistration:
                         rots = torch.cat((torch.zeros((1, 3), device=device), rotation_params), dim=0)
                         trans = torch.cat((torch.zeros((1, 3), device=device), translation_params), dim=0)
                         tran_grid = self._get_affine_grid(rots, trans)
-                        #images_lin = self.sp_tr_img(images, tran_grid, displacement=False)
-                        #masks_lin = self.sp_tr_img(masks, tran_grid, displacement=False)
+                        # images_lin = self.sp_tr_img(images, tran_grid, displacement=False)
+                        # masks_lin = self.sp_tr_img(masks, tran_grid, displacement=False)
                     elif self.affine_adjustment == "affine":  # TOFIX -- Must construct a true affine matrix
                         tran_grid = self._get_affine_grid(matrix=affine_params)
                         # Calculate the inverse of the affine matrix
@@ -386,17 +418,25 @@ class StageRegistration:
                         affine_params_inv = torch.inverse(affine_params_inv)[:, :3, :]
 
                         tran_grid = torch.cat((torch.zeros((1, 3, *self.image_size), device=device), tran_grid), dim=0)
-                        #images_lin = self.sp_tr_img(images, tran_grid, displacement=False)
-                        # with torch.no_grad():
-                        #     deform_flow.copy_(
-                        #         self.sp_tr(
-                        #             deform_flow,
-                        #             #torch.einsum("nij, njhwd -> nihwd", affine_params[:, :3, :3], deform_flow) +
-                        #             #affine_params[:, :3, 3, None, None, None],
-                        #             self._get_affine_grid(matrix=affine_params_inv, type='deform'),
-                        #             displacement=False))
                     else:
-                        images_lin = images
+                        rots = torch.zeros((self.n_img, 3), device=device)
+                        trans = torch.zeros((self.n_img, 3), device=device)
+                        tran_grid = self._get_affine_grid(rots, trans)
+
+                        # images_lin = images
+
+                    # Do bias field correction
+                    # bias_fields_centered = bias_fields  #- torch.mean(bias_fields, dim=(-1, -2, -3), keepdim=True)
+                    # images_bias_corr = torch.exp((bias_fields_centered[:, [0]] + 1) * torch.log(images + 1e-6) +
+                    #                              bias_fields_centered[:, [1]])
+                    # images_bias_corr = (bias_fields_centered[:, [0]] + 1) * images + bias_fields_centered[:, [1]]
+
+                    # images_bias_corr = images * torch.exp(bias_fields_centered)
+                    images_bias_corr = images
+
+                    # img_center = self.sp_tr_img(
+                    #     images_bias_corr[[center_idx]], tran_grid[[center_idx]], displacement=False)
+                    # mask_center = self.sp_tr_img(masks[[center_idx]], tran_grid[[center_idx]], displacement=False)
 
                     loss = 0
                     image_loss = 0
@@ -405,8 +445,11 @@ class StageRegistration:
                     cum_deform_field_fwd = torch.zeros((1, 3, *self.image_size), device=device)
                     cum_deform_field_bwd = torch.zeros((1, 3, *self.image_size), device=device)
 
-                    img_warped = torch.zeros_like(images)
-                    masks_warped = torch.zeros_like(masks)
+                    img_warped = torch.zeros_like(images_bias_corr)
+                    masks_warped = torch.ones_like(masks)
+
+                    # img_warped[center_idx] = img_center[0]
+                    # masks_warped[center_idx] = mask_center[0]
 
                     fwd_end_reached = False
                     bwd_end_reached = False
@@ -434,7 +477,7 @@ class StageRegistration:
                                 deform_flow, dir='fwd', dt=dt_fwd, t=t_fwd, cum_deform=cum_deform_field_fwd)
                             if img_reached_idx is not None:
                                 img_warped[img_reached_idx] = self.sp_tr_img(
-                                    images[[img_reached_idx]][None, ...],
+                                    images_bias_corr[[img_reached_idx]][None, ...],
                                     cum_deform_field_fwd + tran_grid[[img_reached_idx]],
                                     displacement=False)[0]
                                 masks_warped[img_reached_idx] = self.sp_tr_img(
@@ -463,7 +506,7 @@ class StageRegistration:
                                 deform_flow, dir='bwd', dt=dt_bwd, t=t_bwd, cum_deform=cum_deform_field_bwd)
                             if img_reached_idx is not None:
                                 img_warped[img_reached_idx] = self.sp_tr_img(
-                                    images[[img_reached_idx]][None, ...],
+                                    images_bias_corr[[img_reached_idx]][None, ...],
                                     cum_deform_field_bwd + tran_grid[[img_reached_idx]],
                                     displacement=False)[0]
                                 masks_warped[img_reached_idx] = self.sp_tr_img(
@@ -475,9 +518,28 @@ class StageRegistration:
                             t_bwd = t_bwd - dt_bwd
 
                     image_loss, I = self.img_sim_metric_fnc.loss(images=img_warped, masks=masks_warped)
+                    # I = img_warped[[0]]
+                    # image_loss = self.img_sim_metric_fnc.loss(I, img_warped[[1]])
+
+                    # I = torch.mean(img_warped * masks_warped, dim=0) / torch.mean(masks_warped, dim=0)
+
+                    # masks_warped_prod = torch.prod(masks_warped, dim=0, keepdim=True)
+                    # image_loss = torch.mean((I - img_warped)**2 * masks_warped_prod) / torch.mean(masks_warped_prod)
+
+                    # y_true, y_pred, sigma_true, sigma_pred, mask=None):
+                    # image_loss = self.img_sim_metric_fnc.loss(
+                    #     y_true=img_center.repeat(self.n_img, 1, 1, 1, 1),
+                    #     y_pred=img_warped,
+                    #     mask=None,
+                    #     sigma_true=torch.tensor([0.01], device=device),
+                    #     sigma_pred=torch.tensor([0.01], device=device))
+
+                    # image_loss = torch.mean((img_center - img_warped)**2)
 
                     deform_flow_coefs = deform_flow.coefficients[0].permute(4, 0, 1, 2, 3)
                     loss += self._spatial_continuity_loss(deform_flow_coefs)
+                    # loss += self._spatial_continuity_loss_bias(bias_fields)
+                    # loss += torch.mean(bias_fields**2) * 0.1
                     loss += self.l2_penalty * total_length
                     # Combine the losses
                     loss += image_loss
@@ -512,20 +574,21 @@ class StageRegistration:
 
         optimizer.zero_grad()
 
-        images_lin = self.sp_tr_img(images, tran_grid, displacement=False)
+        with torch.no_grad():
+            images_lin = self.sp_tr_img(images, tran_grid, displacement=False)
 
-        return_dict = {
-            "deform_fwd": self._integrate_flow(0, 1, deform_flow),
-            "deform_bwd": self._integrate_flow(1, 0, deform_flow),
-            "coefficients": deform_flow.coefficients,
-            "affine_adjusted_images": images_lin.detach().cpu().numpy(),
-            "I": I.detach().cpu().numpy(),
-        }
-        if self.affine_adjustment == "rigid":
-            return_dict["rotations"] = rots.detach().cpu().numpy()
-            return_dict["translations"] = trans.detach().cpu().numpy()
-        elif self.affine_adjustment == "affine":
-            return_dict["affine_matrix"] = affine_params.detach().cpu().numpy()
+            return_dict = {
+                "bias_field": bias_fields.detach().cpu().numpy(),
+                "deform_field": self._get_cum_flow_matrix(deform_flow, timepoints),
+                "coefficients": deform_flow.coefficients,
+                "affine_adjusted_images": images_lin.detach().cpu().numpy(),
+                "I": I.detach().cpu().numpy(),
+            }
+            if self.affine_adjustment == "rigid":
+                return_dict["rotations"] = rots.detach().cpu().numpy()
+                return_dict["translations"] = trans.detach().cpu().numpy()
+            elif self.affine_adjustment == "affine":
+                return_dict["affine_matrix"] = affine_params.detach().cpu().numpy()
 
         return return_dict
 
@@ -582,7 +645,39 @@ class StageRegistration:
                                2) * self.spatial_so_smoothness_penalty
         return loss
 
-    def _integrate_flow(self, time_start, time_end, deform_flow):
+    def _spatial_continuity_loss_bias(self, bias_field):
+
+        J = field_calculus.jacobian(bias_field, pix_dim=self.deform_pix_dim)
+        margin = 0
+        loss = 0
+        # Normal distribution prior over the Jacobian
+        loss += torch.mean(J[:, :, :, margin:-margin - 1, margin:-margin - 1, margin:-margin - 1]**2) * 100000
+        # L = field_calculus.laplacian(J, pix_dim=self.deform_pix_dim)
+        # loss += torch.mean(L[:, :, :, margin:-margin - 1, margin:-margin - 1, margin:-margin - 1]**2) * 100
+        return loss
+
+    def _get_cum_flow_matrix(self, deform_flow, timepoints):
+        """
+        Computes the cumulative flow matrix for the given timepoints.
+        """
+        cum_flow = torch.zeros((len(timepoints), len(timepoints), 3, *self.image_size), device=self.device)
+        dt = torch.abs(timepoints[-1] - timepoints[0]) / self.integration_steps
+
+        for image_idx, start_time in enumerate(timepoints):
+            if image_idx == 0:
+                # Integrate only in forward direction
+                cum_flow[image_idx, :] = self._integrate_flow(timepoints[:], deform_flow, dt, direction='fwd')
+            elif image_idx == len(timepoints) - 1:
+                # Integrate only in backward direction
+                cum_flow[image_idx, :] = self._integrate_flow(timepoints[:], deform_flow, dt, direction='bwd')
+            else:
+                cum_flow[image_idx, :image_idx + 1] = self._integrate_flow(
+                    timepoints[:image_idx + 1], deform_flow, dt, direction='bwd')
+                cum_flow[image_idx, image_idx:] = self._integrate_flow(
+                    timepoints[image_idx:], deform_flow, dt, direction='fwd')
+        return cum_flow
+
+    def _integrate_flow(self, timepoints, deform_flow, dt, direction='fwd'):
         """
         Integrates a vector field via scaling and squaring.
         Args:
@@ -590,21 +685,49 @@ class StageRegistration:
             dir: The direction to integrate in. ('fwd' or 'bwd')
             target_grid: The grid to start the integration from. If None, the grid will be set to the identity transformation.
         """
-        nsteps = self.integration_steps
+        cum_flow = torch.zeros((len(timepoints), 3, *self.image_size), device=self.device)
 
-        dt = torch.abs(torch.tensor(time_end - time_start)) / nsteps
+        if direction == 'fwd':
+            for image_idx, start_time in enumerate(timepoints):
+                # Integrate only in forward direction
+                cum_deform_field_fwd = torch.zeros((1, 3, *self.image_size), device=self.device)
+                time = torch.tensor([start_time], device=self.device)
+                next_idx = image_idx + 1
 
-        if time_start > time_end:
-            dir = 'bwd'
+                while next_idx < len(timepoints):
+                    if time + dt >= timepoints[next_idx]:
+                        dt_step = torch.abs(timepoints[next_idx] - time)
+                        img_reached = True
+                    else:
+                        dt_step = dt
+                        img_reached = False
+                    cum_deform_field_fwd, _ = self._intergate_flow_dt(
+                        deform_flow, dir='fwd', dt=dt_step, t=time, cum_deform=cum_deform_field_fwd)
+                    time = time + dt_step
+                    if img_reached:
+                        cum_flow[next_idx] = cum_deform_field_fwd
+                        next_idx += 1
         else:
-            dir = 'fwd'
+            for image_idx, start_time in enumerate(timepoints):
+                # Integrate only in backward direction
+                cum_deform_field_bwd = torch.zeros((1, 3, *self.image_size), device=self.device)
+                time = torch.tensor([start_time], device=self.device)
+                next_idx = image_idx - 1
 
-        cum_deform = torch.zeros((1, 3, *self.image_size), device=self.device)
-        for i in range(nsteps):
-            t = torch.tensor([time_start + (time_end - time_start) * (i + 1) / nsteps], device=self.device)
-            cum_deform, _ = self._intergate_flow_dt(deform_flow, dir, t, dt, cum_deform)
-
-        return cum_deform
+                while next_idx >= 0:
+                    if time - dt <= timepoints[next_idx]:
+                        dt_step = torch.abs(time - timepoints[next_idx])
+                        img_reached = True
+                    else:
+                        dt_step = dt
+                        img_reached = False
+                    cum_deform_field_bwd, _ = self._intergate_flow_dt(
+                        deform_flow, dir='bwd', dt=dt_step, t=time, cum_deform=cum_deform_field_bwd)
+                    time = time - dt_step
+                    if img_reached:
+                        cum_flow[next_idx] = cum_deform_field_bwd
+                        next_idx -= 1
+        return cum_flow
 
     def _intergate_flow_dt(self, deform_flow, dir, t, dt, cum_deform):
         """
@@ -625,10 +748,13 @@ class StageRegistration:
             dt = -dt
 
         if method == "euler":
-            deform_flow_t = self.sp_tr_img(deform_flow(t) * dt, cum_deform, displacement=True)
+            if self.smoothing_sigma > 0:
+                flow = self._gaussian_smooth(deform_flow(t), self.smoothing_sigma)
+            else:
+                flow = deform_flow(t)
+            deform_flow_t = self.sp_tr_img(flow * dt, cum_deform, displacement=True)
             cum_deform = cum_deform + deform_flow_t
         elif method == "rk4":
-
             k1 = self.sp_tr_img(deform_flow(t) * dt, cum_deform, displacement=True)
             deform_flow_inter = deform_flow(t + 0.5 * dt) * dt
             k2 = self.sp_tr_img(deform_flow_inter, cum_deform + k1 * 0.5, displacement=True)
@@ -835,7 +961,7 @@ class Registration:
         rotation = None
         translation = None
         affine_matrix = None
-
+        bias_fields = None
         for stage in range(len(self.stages_iterations)):
 
             # Reinitalize the deformable registration model for the current stage
@@ -865,6 +991,11 @@ class Registration:
             else:
                 masks_resampled = None
 
+            if bias_fields is not None:
+                bias_fields = nn.functional.interpolate(bias_fields, size=self.image_sizes[stage], mode="trilinear")
+            else:
+                bias_fields = None
+
             out = self.dr.fit(
                 images=img_resampled,
                 inital_deform_flow=deform_flow,
@@ -872,6 +1003,7 @@ class Registration:
                 initial_rotations=rotation,
                 initial_translations=translation,
                 initial_affine=affine_matrix,
+                initial_bias_fields=bias_fields,
                 masks=masks_resampled,
             )
 

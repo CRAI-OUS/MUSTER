@@ -261,7 +261,7 @@ class StageRegistration:
             delta_times = timepoints[1:] - timepoints[:-1]
             delta_times = delta_times[:, None, None, None, None]
 
-        # The integral deformation flow
+        # The deformation flow
         if inital_deform_flow is None:
             deform_flow = nn.parameter.Parameter(torch.zeros((self.n_flow, 3, *self.deform_size), device=device))
         else:
@@ -339,36 +339,13 @@ class StageRegistration:
                         rots = torch.cat((torch.zeros((1, 3), device=device), rotation_params), dim=0)
                         trans = torch.cat((torch.zeros((1, 3), device=device), translation_params), dim=0)
                         tran_grid = self._get_affine_grid(rots, trans)
-                        batch = self.sp_tr_img(images, tran_grid, displacement=False)
-                    elif self.affine_adjustment == "affine":
-                        tran_grid = self._get_affine_grid(matrix=affine_params)
-                        # Calculate the inverse of the affine matrix
-                        affine_params_inv = torch.cat(
-                            [affine_params,
-                             torch.tensor([0, 0, 0, 1], device=device).repeat(self.n_img - 1, 1, 1)],
-                            dim=1)
-                        affine_params_inv = torch.inverse(affine_params_inv)[:, :3, :]
 
-                        tran_grid = torch.cat((torch.zeros((1, 3, *self.image_size), device=device), tran_grid), dim=0)
-                        batch = self.sp_tr_img(images, tran_grid, displacement=False)
-                        # with torch.no_grad():
-                        #     deform_flow.copy_(
-                        #         self.sp_tr(
-                        #             deform_flow,
-                        #             #torch.einsum("nij, njhwd -> nihwd", affine_params[:, :3, :3], deform_flow) +
-                        #             #affine_params[:, :3, 3, None, None, None],
-                        #             self._get_affine_grid(matrix=affine_params_inv, type='deform'),
-                        #             displacement=False))
                     else:
-                        batch = images
-                        with torch.no_grad():
-                            small_batch = nn.functional.interpolate(
-                                images,
-                                size=self.deform_size,
-                                mode="trilinear",
-                                align_corners=True,
-                            )
+                        rots = torch.zeros((self.n_img, 3), device=device)
+                        trans = torch.zeros((self.n_img, 3), device=device)
+                        tran_grid = self._get_affine_grid(rots, trans)
 
+                    batch = images
                     loss = 0
                     image_loss = 0
                     inv_loss = 0
@@ -383,10 +360,9 @@ class StageRegistration:
 
                     # Regularize the deformation field
                     if self.integration_method == "ss":
-                        loss += self._spatial_continuity_loss(deform_flow / torch.sqrt(delta_times), small_batch[:-1,
-                                                                                                                 ...])
+                        loss += self._spatial_continuity_loss(deform_flow / torch.sqrt(delta_times))
                     else:
-                        loss += self._spatial_continuity_loss(deform_flow, small_batch)
+                        loss += self._spatial_continuity_loss(deform_flow)
 
                     loss += self.l2_penalty * torch.mean((deform_flow / torch.sqrt(delta_times))**2)
 
@@ -425,7 +401,10 @@ class StageRegistration:
                             cum_deform_field_fwd_interp = cum_deform_field_fwd
                             cum_deform_field_bwd_interp = cum_deform_field_bwd
 
-                        sample = self.sp_tr_img(batch[:-delta_timestep - 1, ...], cum_deform_field_fwd_interp)
+                        sample = self.sp_tr_img(
+                            batch[:-delta_timestep - 1, ...],
+                            cum_deform_field_fwd_interp + tran_grid[:-delta_timestep - 1, ...],
+                            displacement=False)
 
                         if self.img_similarity_metric == "VELLN" or self.img_similarity_metric == "VELLNGAUSS":
                             image_loss += self.img_sim_metric_fnc.loss(
@@ -447,8 +426,8 @@ class StageRegistration:
 
                         sample = self.sp_tr_img(
                             batch[delta_timestep + 1:, ...],
-                            cum_deform_field_bwd_interp,
-                        )
+                            cum_deform_field_bwd_interp + tran_grid[delta_timestep + 1:, ...],
+                            displacement=False)
 
                         if self.img_similarity_metric == "VELLN" or self.img_similarity_metric == "VELLNGAUSS":
                             image_loss += self.img_sim_metric_fnc.loss(
@@ -599,7 +578,7 @@ class StageRegistration:
                 J = J[:, :, :, margin:-margin, margin:-margin, margin:-margin]
                 return torch.mean((J)**2)
 
-    def _spatial_continuity_loss(self, deform_flow, img):
+    def _spatial_continuity_loss(self, deform_flow):
         # J = field_calculus.jacobian(deform_flow, pix_dim=self.deform_pix_dim)
         # margin = 0
         # loss = 0
@@ -628,25 +607,8 @@ class StageRegistration:
         J_det_J = field_calculus.jacobian(det_J, pix_dim=self.deform_pix_dim)
         J_det_J = J_det_J[:, :, :, margin:-margin - 1, margin:-margin - 1, margin:-margin - 1]
 
-        # Calculate the image gradient
-        grad = field_calculus.jacobian(img, pix_dim=self.pix_dim)
-        mag_grad = torch.sum(grad**2, dim=1, keepdim=True)
-        mag_grad = mag_grad[:, :, :, margin:-margin - 1, margin:-margin - 1, margin:-margin - 1]
-        # Set the edge to zero
-        mag_grad[:, :, :, 0, :, :] = 0
-        mag_grad[:, :, :, -1, :, :] = 0
-        mag_grad[:, :, :, :, 0, :] = 0
-        mag_grad[:, :, :, :, -1, :] = 0
-        mag_grad[:, :, :, :, :, 0] = 0
-        mag_grad[:, :, :, :, :, -1] = 0
+        loss += torch.mean(J_det_J**2 * self.spatial_jac_smoothness_penalty)
 
-        loss += torch.mean(
-            torch.abs(J_det_J) * (self.spatial_jac_smoothness_penalty + self.spatial_jac_tissue_smoothness_penalty /
-                                  (mag_grad + 0.3)))
-
-        # loss += torch.mean(J_det_J**2 *
-        #                    (self.spatial_jac_smoothness_penalty + self.spatial_jac_tissue_smoothness_penalty /
-        #                     (mag_grad + 0.3)))
         return loss
 
     def _temperal_continuity_loss(self, deform_flow, delta_times):
@@ -1107,8 +1069,8 @@ class Registration:
             stage_args["image_size"] = self.image_sizes[stage]
             stage_args["pix_dim"] = self.pix_dims[stage]
 
-            self.dr = None
-            torch.cuda.empty_cache()
+            # self.dr = None
+            # torch.cuda.empty_cache()
             self.dr = StageRegistration(**stage_args)
 
             if self.verbose:

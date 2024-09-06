@@ -61,6 +61,85 @@ def fourier_filter(img, filter_response, dims=(-3, -2, -1)):
     return torch.fft.ifftn(torch.fft.fftn(img, dim=(-3, -2, -1)) * filter_response, dim=(-3, -2, -1)).real
 
 
+class LogLinLoss:
+    """Assuming I_ix = a_i I_x e find the I_ix that maximizes the likelihood of this model
+    
+    Args:
+        kernal_size (int): The size of the kernal used for calculating the local mean
+    """
+
+    def __init__(self,
+                 kernal_size=7,
+                 kernal_type="gaussian",
+                 pix_dim=(1, 1, 1),
+                 image_size=(256, 256, 256),
+                 log_transform=True):
+        self.kernal_type = kernal_type
+        if kernal_type == "window":
+            # Check that the kernal size is an integer or an float close to an integer
+            if not (isinstance(kernal_size, int) or math.isclose(kernal_size, int(kernal_size))):
+                raise ValueError("The kernal size must be an integer or an float close to an integer")
+            # Check that the kernal size is odd
+            if kernal_size % 2 == 0:
+                raise ValueError("The kernal size must be odd")
+            self.kernal_size = int(kernal_size)
+            self.n = kernal_size**3
+            self.padding = kernal_size // 2
+        elif kernal_type == "gaussian":
+            self.omega_f = 1 / (2 * torch.pi * kernal_size)
+            self.pix_dim = pix_dim
+            self.image_size = image_size
+        self.log_transform = log_transform
+
+    def loss(self, images, masks=None, sigma_beta=1.0):
+        """
+        Args:
+            images (torch.Tensor): the images warped to the same space
+            mask (torch.Tensor): The mask used for calculating the loss
+        """
+        #masks = images != 0
+        if masks is None:
+            masks = torch.ones_like(images)
+
+        masks = torch.prod(masks, dim=0, keepdim=True)
+        masks = masks.float()
+
+        eps = 1e-5
+        if self.log_transform:
+            f_i = torch.log(images + eps) * masks
+        else:
+            f_i = images * masks
+
+        if self.kernal_type == "window":
+            # The number of valid voxels in the kernal
+            n_kernal_f = torch.nn.functional.avg_pool3d(
+                masks, self.kernal_size, stride=1, padding=self.padding) * self.n
+            # Make sure we don't divide by zero
+            n_kernal_f = torch.max(n_kernal_f, torch.ones_like(n_kernal_f)) + 1 / sigma_beta**2
+
+            # Calculate the local mean
+            E_f = torch.nn.functional.avg_pool3d(
+                f_i, self.kernal_size, stride=1, padding=self.padding) * self.n / n_kernal_f
+
+        elif self.kernal_type == "gaussian":
+            # Gaussian filter
+            freqsx = torch.fft.fftfreq(self.image_size[0], d=self.pix_dim[0], device=images.device)
+            freqsy = torch.fft.fftfreq(self.image_size[1], d=self.pix_dim[1], device=images.device)
+            freqsz = torch.fft.fftfreq(self.image_size[2], d=self.pix_dim[2], device=images.device)
+            freqsx, freqsy, freqsz = torch.meshgrid(freqsx, freqsy, freqsz, indexing="ij")
+            filter_response = torch.exp(-1 / 2 * ((freqsx**2 + freqsy**2 + freqsz**2) / self.omega_f**2))
+
+            n_kernal_f = fourier_filter(masks, filter_response)
+            n_kernal_f = torch.max(n_kernal_f, torch.ones_like(n_kernal_f)) + 1 / sigma_beta**2
+
+            # Calculate the local mean
+            E_f = fourier_filter(f_i, filter_response) / n_kernal_f
+
+        f_i_bar = f_i - E_f
+        E_f_i_bar = torch.mean(f_i_bar, dim=0, keepdim=True)
+        return torch.mean((f_i_bar - E_f_i_bar)**2 * masks) / torch.mean(masks), E_f_i_bar
+
+
 class GroupVELLN:
     """Variance Estimating Local Linear compansated Normal distribution loss
     
@@ -131,10 +210,12 @@ class GroupVELLN:
             E_f = fourier_filter(f_i, filter_response) / n_kernal_f
             E_ff = fourier_filter(ff, filter_response) / n_kernal_f
 
-        f_var = E_ff - E_f * E_f + 0.1
+        f_var = E_ff - E_f * E_f + 0.0001
         f_i_bar = (f_i - E_f)
+        f_i_bar = f_i
         I = torch.mean(f_i_bar / torch.sqrt(f_var), dim=0, keepdim=True)
-        return torch.mean((f_i_bar - torch.sqrt(f_var) * I)**2 * masks) / torch.mean(masks), I
+        return torch.mean((f_i_bar - torch.sqrt(f_var) * I)**2 * masks) / torch.mean(masks), I * torch.mean(
+            torch.sqrt(f_var), dim=0, keepdim=True)  #+ torch.mean(E_f, dim=0, keepdim=True)
 
 
 class VELLN:
@@ -168,12 +249,12 @@ class VELLN:
             y_pred (torch.Tensor): The predicted field
             mask (torch.Tensor): The mask used for calculating the loss
         """
-        mask_true = y_true != 0
-        #mask_true = torch.ones_like(y_true)
+        #mask_true = y_true != 0
+        mask_true = torch.ones_like(y_true)
         mask_true = mask_true.float()
 
-        mask_pred = y_pred != 0
-        #mask_pred = torch.ones_like(y_pred)
+        #mask_pred = y_pred != 0
+        mask_pred = torch.ones_like(y_pred)
         mask_pred = mask_pred.float()
 
         f_i = y_true
@@ -518,8 +599,8 @@ class MutualInformation(torch.nn.Module):
 
     def getMutualInformation(self, input1, input2):
         '''
-			input1: B, C, H, W
-			input2: B, C, H, W
+			input1: B, C, H, W, D
+			input2: B, C, H, W, D
 
 			return: scalar
 		'''
