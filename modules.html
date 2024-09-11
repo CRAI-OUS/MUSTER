@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymuster &mdash; pymuster 0.1.9 documentation</title>
+  <title>pymuster &mdash; pymuster 0.1.10 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,12 +13,14 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=8618f531"></script>
+        <script src="_static/documentation_options.js?v=bafade30"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pymuster package" href="pymuster.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,12 +43,15 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">MUSTER: Multi-Session Temporal Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#installation">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pymuster</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pymuster.html">pymuster package</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="cli_reference.html">Comand Line Iterface Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
 </ul>
 
         </div>
@@ -97,11 +102,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pymuster.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pymuster.html#module-pymuster.muster">pymuster.muster module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pymuster.html#pymuster.muster.AffineRegistration"><code class="docutils literal notranslate"><span class="pre">AffineRegistration</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pymuster.html#pymuster.muster.AffineRegistration.combine_affine_matrices"><code class="docutils literal notranslate"><span class="pre">AffineRegistration.combine_affine_matrices()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pymuster.html#pymuster.muster.AffineRegistration.fit"><code class="docutils literal notranslate"><span class="pre">AffineRegistration.fit()</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="pymuster.html#pymuster.muster.Registration"><code class="docutils literal notranslate"><span class="pre">Registration</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pymuster.html#pymuster.muster.Registration.deform"><code class="docutils literal notranslate"><span class="pre">Registration.deform()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pymuster.html#pymuster.muster.Registration.fit"><code class="docutils literal notranslate"><span class="pre">Registration.fit()</span></code></a></li>
@@ -115,17 +115,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pymuster.html#pymuster.muster.StageRegistration"><code class="docutils literal notranslate"><span class="pre">StageRegistration</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pymuster.html#pymuster.muster.StageRegistration.add_linear_transform"><code class="docutils literal notranslate"><span class="pre">StageRegistration.add_linear_transform()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pymuster.html#pymuster.muster.StageRegistration.deform"><code class="docutils literal notranslate"><span class="pre">StageRegistration.deform()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pymuster.html#pymuster.muster.StageRegistration.fit"><code class="docutils literal notranslate"><span class="pre">StageRegistration.fit()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pymuster.html#pymuster.muster.StageRegistration.get_deform_fields"><code class="docutils literal notranslate"><span class="pre">StageRegistration.get_deform_fields()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pymuster.html#pymuster.muster.StageRegistration.linear_transform"><code class="docutils literal notranslate"><span class="pre">StageRegistration.linear_transform()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pymuster.html#pymuster.muster.StageRegistration.rigid_transform"><code class="docutils literal notranslate"><span class="pre">StageRegistration.rigid_transform()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pymuster.html#pymuster-muster-lin-module">pymuster.muster_lin module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pymuster.html#module-pymuster">Module contents</a></li>
 </ul>
 </li>
@@ -136,7 +133,10 @@
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pymuster.html" class="btn btn-neutral float-right" title="pymuster package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

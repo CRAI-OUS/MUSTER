@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymuster package &mdash; pymuster 0.1.9 documentation</title>
+  <title>pymuster package &mdash; pymuster 0.1.10 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,12 +13,14 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=8618f531"></script>
+        <script src="_static/documentation_options.js?v=bafade30"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pymuster.cli package" href="pymuster.cli.html" />
+    <link rel="prev" title="pymuster" href="modules.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,12 +43,30 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">MUSTER: Multi-Session Temporal Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html#installation">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pymuster</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pymuster package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pymuster.cli.html">pymuster.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pymuster.core.html">pymuster.core package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pymuster.muster">pymuster.muster module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pymuster.muster.Registration"><code class="docutils literal notranslate"><span class="pre">Registration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pymuster.muster.SpatialTransformer"><code class="docutils literal notranslate"><span class="pre">SpatialTransformer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pymuster.muster.StageRegistration"><code class="docutils literal notranslate"><span class="pre">StageRegistration</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pymuster">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="cli_reference.html">Comand Line Iterface Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
 </ul>
 
         </div>
@@ -63,6 +83,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">pymuster</a></li>
       <li class="breadcrumb-item active">pymuster package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/pymuster.rst.txt" rel="nofollow"> View page source</a>
@@ -149,8 +170,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pymuster.core.html#pymuster.core.utils.VectorPearsonCorrelation"><code class="docutils literal notranslate"><span class="pre">VectorPearsonCorrelation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymuster.core.html#pymuster.core.utils.get_color_wheel"><code class="docutils literal notranslate"><span class="pre">get_color_wheel()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymuster.core.html#pymuster.core.utils.get_dig_ind"><code class="docutils literal notranslate"><span class="pre">get_dig_ind()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pymuster.core.html#pymuster.core.utils.grid"><code class="docutils literal notranslate"><span class="pre">grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymuster.core.html#pymuster.core.utils.plot_vector_field"><code class="docutils literal notranslate"><span class="pre">plot_vector_field()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymuster.core.html#pymuster.core.utils.render_brain"><code class="docutils literal notranslate"><span class="pre">render_brain()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymuster.core.html#pymuster.core.utils.view_brain"><code class="docutils literal notranslate"><span class="pre">view_brain()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pymuster.core.html#pymuster.core.utils.view_stacked_brains"><code class="docutils literal notranslate"><span class="pre">view_stacked_brains()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pymuster.core.html#module-pymuster.core">Module contents</a></li>
@@ -166,36 +192,6 @@
 <span id="pymuster-muster-module"></span><h2>pymuster.muster module<a class="headerlink" href="#module-pymuster.muster" title="Link to this heading"></a></h2>
 <p>Multi Session Temporal Registration.</p>
 <p>This module is the core of Multi Session Temporal Registration (MUSTER).</p>
-<dl class="simple">
-<dt>Classes:</dt><dd><p>StageRegistration: Register a longitudinal series of images using a series of deformation fields using a single resolution.</p>
-</dd>
-</dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="pymuster.muster.AffineRegistration">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.muster.</span></span><span class="sig-name descname"><span class="pre">AffineRegistration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_search_angles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stages_img_scales</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bilinear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'zeros'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.muster.AffineRegistration" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pymuster.muster.AffineRegistration.combine_affine_matrices">
-<span class="sig-name descname"><span class="pre">combine_affine_matrices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.muster.AffineRegistration.combine_affine_matrices" title="Link to this definition"></a></dt>
-<dd><p>Assumes the matrices are in the shape (N, 3, 4)</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pymuster.muster.AffineRegistration.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fixed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">movings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.muster.AffineRegistration.fit" title="Link to this definition"></a></dt>
-<dd><p>Fits the affine registration model to the images.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fixed</strong> (<em>torch.Tensor</em>) – The fixed image. Shape (1, C, x, y, z)</p></li>
-<li><p><strong>movings</strong> (<em>torch.Tensor</em>) – The moving images. Shape (N, C, x, y, z)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="pymuster.muster.Registration">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.muster.</span></span><span class="sig-name descname"><span class="pre">Registration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stages_iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stages_img_scales</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stages_deform_scales</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.muster.Registration" title="Link to this definition"></a></dt>
@@ -206,14 +202,14 @@ resolution is increased and the images are registrated again. At each resolution
 has a resolution relative to the resampled image resolution set by <code class="docutils literal notranslate"><span class="pre">deform_res_scale</span></code>.</p>
 <p>Accepts same arguments as <a class="reference internal" href="#pymuster.muster.StageRegistration" title="pymuster.muster.StageRegistration"><code class="xref py py-class docutils literal notranslate"><span class="pre">StageRegistration</span></code></a> but <code class="xref py py-attr docutils literal notranslate"><span class="pre">iterations</span></code> is replaced by
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">stages_iterations</span></code>, attr:<cite>deform_res_scale</cite> is replaced by <code class="xref py py-attr docutils literal notranslate"><span class="pre">stages_deform_scales</span></code>, and
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">image_size</span></code> is replaced by <code class="xref py py-attr docutils literal notranslate"><span class="pre">stages_img_scales</span></code>.</p>
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">img_size</span></code> is replaced by <code class="xref py py-attr docutils literal notranslate"><span class="pre">stages_img_scales</span></code>.</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">muster</span> <span class="kn">import</span> <span class="n">Registration</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">deform_reg</span> <span class="o">=</span> <span class="n">Registration</span><span class="p">(</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">stages_iterations</span><span class="o">=</span><span class="p">[</span><span class="mi">500</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">stages_img_scales</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">stages_deform_scales</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">img_size</span><span class="o">=</span><span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">pix_dim</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cuda:0&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
@@ -259,21 +255,20 @@ Finally the resolution is increased to <code class="docutils literal notranslate
 <dl class="py method">
 <dt class="sig sig-object py" id="pymuster.muster.Registration.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timepoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.muster.Registration.fit" title="Link to this definition"></a></dt>
-<dd><p>Fits the registration model to the images
-Args:.</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>images (numpy.ndarray or torch.Tensor): The images to registrate. Shape (N, C, x, y, z)</p></li>
-<li><p>timepoints (numpy.ndarray or torch.Tensor, optional): The timepoints of the images. Shape (N,)</p></li>
-<li><p>masks (numpy.ndarray or torch.Tensor, optional): The masks of the images. Shape (N, C, x, y, z)</p></li>
-</ul>
-</div></blockquote>
+<dd><p>Fits the registration model to the images</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A dictionary containing the deformation field, rotations and translations.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>images</strong> (<em>numpy.ndarray</em><em> or </em><em>torch.Tensor</em>) – The images to registrate. Shape (N, C, x, y, z)</p></li>
+<li><p><strong>timepoints</strong> (<em>numpy.ndarray</em><em> or </em><em>torch.Tensor</em><em>, </em><em>optional</em>) – The timepoints of the images. Shape (N,)</p></li>
+<li><p><strong>masks</strong> (<em>numpy.ndarray</em><em> or </em><em>torch.Tensor</em><em>, </em><em>optional</em>) – The masks of the images. Shape (N, C, x, y, z)</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the deformation field, rotations and translations.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -302,7 +297,8 @@ deform_matrix[i, j].</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymuster.muster.Registration.get_identity_grid">
 <span class="sig-name descname"><span class="pre">get_identity_grid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.muster.Registration.get_identity_grid" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Returns the identity grid.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pymuster.muster.Registration.rigid_transform">
@@ -354,77 +350,47 @@ the input space. The deformation field is given in mm/step.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pymuster.muster.StageRegistration">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.muster.</span></span><span class="sig-name descname"><span class="pre">StageRegistration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deform_res_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spatial_smoothness_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spatial_jac_smoothness_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spatial_jac_tissue_smoothness_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temporal_smoothness_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invertability_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing_sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bilinear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integration_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integration_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ss'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_composition_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'interpolate'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine_adjustment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">betas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0.9,</span> <span class="pre">0.999)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_similarity_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'NCC'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_similarity_scale_invariant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_similarity_spatial_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.muster.StageRegistration" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymuster.muster.</span></span><span class="sig-name descname"><span class="pre">StageRegistration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deform_res_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spatial_smoothness_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temporal_smoothness_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invertability_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing_sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bilinear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integration_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integration_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ss'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_composition_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'interpolate'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine_adjustment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">betas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0.9,</span> <span class="pre">0.999)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_similarity_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'NCC'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_similarity_spatial_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_similarity_scale_invariant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.muster.StageRegistration" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Register a longitudinal series of images using a series of deformation fields using a single resolution.</p>
 <p>The images must be in the same space and must be pre-registered using an rigid or affine transformation.</p>
 <p>The deformation between two consectutive timepoints is represented by a deformation field. These fields are
 generated by integrating a vector field, also known as the deformation flow. Various methods for
-this integration are supported:</p>
+integration are supported:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">integration_method=&quot;ss&quot;</span></code>: Use scaling and squaring to integrate stationary vector fields. (Default)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">integration_method=euler</span></code>: Use euler integration for stationary vector fields.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">integration_method=rk4</span></code>: Use Runge-Kutta 4 integration for stationary vector field.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">integration_method=euler_time</span></code>: Use euler integration for time varying vector fields.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">integration_method=rk4_time</span></code>: Use Runge-Kutta 4 integration for time varying vector fields.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integration_method=&quot;euler&quot;</span></code>: Use euler integration for stationary vector fields.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integration_method=&quot;rk4&quot;</span></code>: Use Runge-Kutta 4 integration for stationary vector field.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integration_method=&quot;euler_time&quot;</span></code>: Use euler integration for time varying vector fields.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integration_method=&quot;rk4_time&quot;</span></code>: Use Runge-Kutta 4 integration for time varying vector fields.</p></li>
 </ul>
 </div></blockquote>
-<dl class="simple">
-<dt>For non-consecutive timepoints, the deformation field can be composed in two ways:</dt><dd><ul class="simple">
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">field_composition_method=&quot;interpolate&quot;</span></code>: Use interpolation to compose the intermediate deformation</dt><dd><p>fields. (Default)</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">field_composition_method=&quot;flow_continuation&quot;</span></code>: Continuate the deformation field by integrating the</dt><dd><p>intermediate deformation flows.</p>
-</dd>
-</dl>
-</li>
+<p>For non-consecutive timepoints, the deformation field can be composed in two ways:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">field_composition_method=&quot;interpolate&quot;</span></code>: Use interpolation to compose the intermediate deformation fields. (Default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">field_composition_method=&quot;flow_continuation&quot;</span></code>: Continuate the deformation field by integrating the intermediate deformation flows.</p></li>
 </ul>
-</dd>
-<dt>Supported image similarity metrics include:</dt><dd><ul class="simple">
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">img_similarity_metric=&quot;NCC&quot;</span></code>: Normalized local cross correlation between the two images as loss.</dt><dd><p>The local neighborhood is a cube of size with side length <code class="docutils literal notranslate"><span class="pre">img_similarity_spatial_size</span></code>.</p>
-</dd>
-</dl>
-</li>
+</div></blockquote>
+<p>Supported image similarity metrics include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">img_similarity_metric=&quot;NCC&quot;</span></code>: Normalized local cross correlation between the two images as loss. The local neighborhood is a cube of size with side length <code class="docutils literal notranslate"><span class="pre">img_similarity_spatial_size</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">img_similarity_metric=&quot;L2&quot;</span></code>: L2 norm of the difference between the two images as loss.</p></li>
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">img_similarity_metric=&quot;NCCS&quot;</span></code>: Use a sobel filter to compute the gradient of the two images, and use the</dt><dd><p>normalized local cross correlation between the two gradients as loss. The local window
-is a cube of size with side length <code class="docutils literal notranslate"><span class="pre">3</span></code>.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">img_similarity_metric=&quot;WNCC&quot;</span></code>: Normalized local cross correlation between the two images as loss where each</dt><dd><p>local neighborhood is weighted by the cross standard deviation of the two images.
-The local neighborhood is a cube of size with side length <code class="docutils literal notranslate"><span class="pre">img_similarity_spatial_size</span></code>.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">img_similarity_metric=&quot;GaussNCC&quot;</span></code>: Normalized local cross correlation between the two images as loss where</dt><dd><p>each local neighborhood is weighted by a gaussian filter. The standard deviation of the gaussian filter is
-<code class="docutils literal notranslate"><span class="pre">img_similarity_spatial_size</span></code>.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">img_similarity_metric=&quot;Fourier&quot;</span></code>: Use the Fourier tranform to compute a filtered gradient of each images,</dt><dd><p>and compute the global normalized cross correlation between the two filtered gradients as loss.
-The standard deviation of the gaussian filter is <code class="docutils literal notranslate"><span class="pre">img_similarity_spatial_size</span></code>.</p>
-</dd>
-</dl>
-</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">img_similarity_metric=&quot;NCCS&quot;</span></code>: Use a sobel filter to compute the gradient of the two images, and use the normalized local cross correlation between the two gradients as loss. The local window is a cube of size with side length <code class="docutils literal notranslate"><span class="pre">3</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">img_similarity_metric=&quot;WNCC&quot;</span></code>: Normalized local cross correlation between the two images as loss where each local neighborhood is weighted by the cross standard deviation of the two images.The local neighborhood is a cube of size with side length <code class="docutils literal notranslate"><span class="pre">img_similarity_spatial_size</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">img_similarity_metric=&quot;GaussNCC&quot;</span></code>: Normalized local cross correlation between the two images as loss where each local neighborhood is weighted by a gaussian filter. The standard deviation of the gaussian filter is given by <code class="docutils literal notranslate"><span class="pre">img_similarity_spatial_size</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">img_similarity_metric=&quot;Fourier&quot;</span></code>: Use the Fourier tranform to compute a filtered gradient of each images, and compute the global normalized cross correlation between the two filtered gradients as loss. The standard deviation of the gaussian filter is <code class="docutils literal notranslate"><span class="pre">img_similarity_spatial_size</span></code>.</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>image_size</strong> (<em>tuple</em>) – The size of the input images in the format <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">z)</span></code>.</p></li>
+<li><p><strong>img_size</strong> (<em>tuple</em>) – The size of the input images in the format <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">z)</span></code>.</p></li>
 <li><p><strong>pix_dim</strong> (<em>tuple</em>) – The pixel dimensions of the input images in the format <code class="docutils literal notranslate"><span class="pre">(dx,</span> <span class="pre">dy,</span> <span class="pre">dz)</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">1)</span></code>.</p></li>
 <li><p><strong>deform_res_scale</strong> (<em>int</em>) – The resolution scale of the deformation field. The deformation field will have a
-resolution of image_size/deform_res_scale. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+resolution of img_size/deform_res_scale. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
 <li><p><strong>device</strong> (<em>str</em>) – The device to use for computation. (‘cpu’ or ‘cuda:n’ or torch.device object). Default is <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code>.</p></li>
 <li><p><strong>num_iterations</strong> (<em>int</em>) – Number of optimization iterations. Default is <code class="docutils literal notranslate"><span class="pre">100</span></code>.</p></li>
 <li><p><strong>spatial_smoothness_penalty</strong> (<em>float</em>) – Weight for spatial smoothness in loss function. Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
@@ -450,11 +416,6 @@ similarity metric. Default is <code class="docutils literal notranslate"><span c
 </ul>
 </dd>
 </dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="pymuster.muster.StageRegistration.add_linear_transform">
-<span class="sig-name descname"><span class="pre">add_linear_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">displacements</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.muster.StageRegistration.add_linear_transform" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pymuster.muster.StageRegistration.deform">
 <span class="sig-name descname"><span class="pre">deform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deform_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bilinear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'zeros'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.muster.StageRegistration.deform" title="Link to this definition"></a></dt>
@@ -524,20 +485,12 @@ deform_matrix[i, j].</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymuster.muster.StageRegistration.linear_transform">
-<span class="sig-name descname"><span class="pre">linear_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.muster.StageRegistration.linear_transform" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pymuster.muster.StageRegistration.rigid_transform">
 <span class="sig-name descname"><span class="pre">rigid_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymuster.muster.StageRegistration.rigid_transform" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</section>
-<section id="pymuster-muster-lin-module">
-<h2>pymuster.muster_lin module<a class="headerlink" href="#pymuster-muster-lin-module" title="Link to this heading"></a></h2>
 </section>
 <section id="module-pymuster">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pymuster" title="Link to this heading"></a></h2>
@@ -547,7 +500,10 @@ deform_matrix[i, j].</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="pymuster" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pymuster.cli.html" class="btn btn-neutral float-right" title="pymuster.cli package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

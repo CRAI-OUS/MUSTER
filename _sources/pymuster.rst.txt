@@ -21,14 +21,6 @@ pymuster.muster module
    :undoc-members:
    :show-inheritance:
 
-pymuster.muster\_lin module
----------------------------
-
-.. automodule:: pymuster.muster_lin
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 
