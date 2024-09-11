@@ -11,11 +11,9 @@ Welcome to pymuster's documentation!
    :caption: Contents:
 
    introduction
-   installation
    quickstart
+   modules
    cli_reference
-   api_reference
-
 
 Indices and tables
 ==================

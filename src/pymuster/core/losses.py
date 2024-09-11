@@ -72,7 +72,7 @@ class LogLinLoss:
                  kernal_size=7,
                  kernal_type="gaussian",
                  pix_dim=(1, 1, 1),
-                 image_size=(256, 256, 256),
+                 img_size=(256, 256, 256),
                  log_transform=True):
         self.kernal_type = kernal_type
         if kernal_type == "window":
@@ -88,7 +88,7 @@ class LogLinLoss:
         elif kernal_type == "gaussian":
             self.omega_f = 1 / (2 * torch.pi * kernal_size)
             self.pix_dim = pix_dim
-            self.image_size = image_size
+            self.img_size = img_size
         self.log_transform = log_transform
 
     def loss(self, images, masks=None, sigma_beta=1.0):
@@ -123,9 +123,9 @@ class LogLinLoss:
 
         elif self.kernal_type == "gaussian":
             # Gaussian filter
-            freqsx = torch.fft.fftfreq(self.image_size[0], d=self.pix_dim[0], device=images.device)
-            freqsy = torch.fft.fftfreq(self.image_size[1], d=self.pix_dim[1], device=images.device)
-            freqsz = torch.fft.fftfreq(self.image_size[2], d=self.pix_dim[2], device=images.device)
+            freqsx = torch.fft.fftfreq(self.img_size[0], d=self.pix_dim[0], device=images.device)
+            freqsy = torch.fft.fftfreq(self.img_size[1], d=self.pix_dim[1], device=images.device)
+            freqsz = torch.fft.fftfreq(self.img_size[2], d=self.pix_dim[2], device=images.device)
             freqsx, freqsy, freqsz = torch.meshgrid(freqsx, freqsy, freqsz, indexing="ij")
             filter_response = torch.exp(-1 / 2 * ((freqsx**2 + freqsy**2 + freqsz**2) / self.omega_f**2))
 
@@ -147,7 +147,7 @@ class GroupVELLN:
         kernal_size (int): The size of the kernal used for calculating the local mean
     """
 
-    def __init__(self, kernal_size=7, kernal_type="gaussian", pix_dim=(1, 1, 1), image_size=(256, 256, 256)):
+    def __init__(self, kernal_size=7, kernal_type="gaussian", pix_dim=(1, 1, 1), img_size=(256, 256, 256)):
         self.kernal_type = kernal_type
         if kernal_type == "window":
             # Check that the kernal size is an integer or an float close to an integer
@@ -162,7 +162,7 @@ class GroupVELLN:
         elif kernal_type == "gaussian":
             self.omega_f = 1 / (2 * torch.pi * kernal_size)
             self.pix_dim = pix_dim
-            self.image_size = image_size
+            self.img_size = img_size
 
     def loss(self, images, masks=None):
         """
@@ -197,9 +197,9 @@ class GroupVELLN:
 
         elif self.kernal_type == "gaussian":
             # Gaussian filter
-            freqsx = torch.fft.fftfreq(self.image_size[0], d=self.pix_dim[0], device=images.device)
-            freqsy = torch.fft.fftfreq(self.image_size[1], d=self.pix_dim[1], device=images.device)
-            freqsz = torch.fft.fftfreq(self.image_size[2], d=self.pix_dim[2], device=images.device)
+            freqsx = torch.fft.fftfreq(self.img_size[0], d=self.pix_dim[0], device=images.device)
+            freqsy = torch.fft.fftfreq(self.img_size[1], d=self.pix_dim[1], device=images.device)
+            freqsz = torch.fft.fftfreq(self.img_size[2], d=self.pix_dim[2], device=images.device)
             freqsx, freqsy, freqsz = torch.meshgrid(freqsx, freqsy, freqsz, indexing="ij")
             filter_response = torch.exp(-1 / 2 * ((freqsx**2 + freqsy**2 + freqsz**2) / self.omega_f**2))
 
@@ -225,7 +225,7 @@ class VELLN:
         kernal_size (int): The size of the kernal used for calculating the local mean
     """
 
-    def __init__(self, kernal_size=7, kernal_type="gaussian", pix_dim=(1, 1, 1), image_size=(256, 256, 256)):
+    def __init__(self, kernal_size=7, kernal_type="gaussian", pix_dim=(1, 1, 1), img_size=(256, 256, 256)):
         self.kernal_type = kernal_type
         if kernal_type == "window":
             # Check that the kernal size is an integer or an float close to an integer
@@ -240,7 +240,7 @@ class VELLN:
         elif kernal_type == "gaussian":
             self.omega_f = 1 / (2 * torch.pi * kernal_size)
             self.pix_dim = pix_dim
-            self.image_size = image_size
+            self.img_size = img_size
 
     def loss(self, y_true, y_pred, sigma_true, sigma_pred, mask=None):
         """
@@ -293,9 +293,9 @@ class VELLN:
                 fg, self.kernal_size, stride=1, padding=self.padding) * self.n / n_kernal_fg
         elif self.kernal_type == "gaussian":
             # Gaussian filter
-            freqsx = torch.fft.fftfreq(self.image_size[0], d=self.pix_dim[0], device=y_true.device)
-            freqsy = torch.fft.fftfreq(self.image_size[1], d=self.pix_dim[1], device=y_true.device)
-            freqsz = torch.fft.fftfreq(self.image_size[2], d=self.pix_dim[2], device=y_true.device)
+            freqsx = torch.fft.fftfreq(self.img_size[0], d=self.pix_dim[0], device=y_true.device)
+            freqsy = torch.fft.fftfreq(self.img_size[1], d=self.pix_dim[1], device=y_true.device)
+            freqsz = torch.fft.fftfreq(self.img_size[2], d=self.pix_dim[2], device=y_true.device)
             freqsx, freqsy, freqsz = torch.meshgrid(freqsx, freqsy, freqsz, indexing="ij")
             filter_response = torch.exp(-1 / 2 * ((freqsx**2 + freqsy**2 + freqsz**2) / self.omega_f**2))
 
@@ -404,9 +404,9 @@ class VELLN:
 
 class GaussNCC:
 
-    def __init__(self, filter_omega, image_size, pix_dim, reduce=True, scale_invariant=True):
+    def __init__(self, filter_omega, img_size, pix_dim, reduce=True, scale_invariant=True):
         self.filter_omega = filter_omega  #/pix_dim[0]
-        self.image_size = image_size
+        self.img_size = img_size
         self.pix_dim = pix_dim
         self.omega_f = 1 / (2 * torch.pi * filter_omega)
         self.reduce = reduce
@@ -422,9 +422,9 @@ class GaussNCC:
         fg = f_i * g_i
 
         # Gaussian filter
-        freqsx = torch.fft.fftfreq(self.image_size[0], d=self.pix_dim[0], device=y_true.device)
-        freqsy = torch.fft.fftfreq(self.image_size[1], d=self.pix_dim[1], device=y_true.device)
-        freqsz = torch.fft.fftfreq(self.image_size[2], d=self.pix_dim[2], device=y_true.device)
+        freqsx = torch.fft.fftfreq(self.img_size[0], d=self.pix_dim[0], device=y_true.device)
+        freqsy = torch.fft.fftfreq(self.img_size[1], d=self.pix_dim[1], device=y_true.device)
+        freqsz = torch.fft.fftfreq(self.img_size[2], d=self.pix_dim[2], device=y_true.device)
         freqsx, freqsy, freqsz = torch.meshgrid(freqsx, freqsy, freqsz, indexing="ij")
         filter_response = torch.exp(-1 / 2 * ((freqsx**2 + freqsy**2 + freqsz**2) / self.omega_f**2))
 
@@ -457,13 +457,13 @@ class Fourier:
     
     Args:
         filter_omega (float): The cutoff frequency of the filter
-        image_size (tuple): The size of the image
+        img_size (tuple): The size of the image
         pix_dim (tuple): The pixel dimensions of the image
     """
 
-    def __init__(self, filter_omega, image_size, pix_dim):
+    def __init__(self, filter_omega, img_size, pix_dim):
         self.filter_omega = filter_omega  #/pix_dim[0]
-        self.image_size = image_size
+        self.img_size = img_size
         self.pix_dim = pix_dim
 
     def loss(self, y_true, y_pred, mask=None):
@@ -485,9 +485,9 @@ class Fourier:
         y_fft = torch.fft.fftn(y, dim=(-3, -2, -1))
 
         # Compute the derivative by multiplying with the fourier space coordinates
-        freqsx = torch.fft.fftfreq(self.image_size[0], d=self.pix_dim[0], device=y.device)
-        freqsy = torch.fft.fftfreq(self.image_size[1], d=self.pix_dim[1], device=y.device)
-        freqsz = torch.fft.fftfreq(self.image_size[2], d=self.pix_dim[2], device=y.device)
+        freqsx = torch.fft.fftfreq(self.img_size[0], d=self.pix_dim[0], device=y.device)
+        freqsy = torch.fft.fftfreq(self.img_size[1], d=self.pix_dim[1], device=y.device)
+        freqsz = torch.fft.fftfreq(self.img_size[2], d=self.pix_dim[2], device=y.device)
         freqsx, freqsy, freqsz = torch.meshgrid(freqsx, freqsy, freqsz, indexing="ij")
 
         filter = torch.exp(-1 / 2 * (freqsx**2 + freqsy**2 + freqsz**2) / self.filter_omega**2)
@@ -551,7 +551,7 @@ class MSE:
     def loss(self, y_true, y_pred, mask=None):
 
         if mask is not None:
-            return torch.mean((y_true - y_pred)**2 * mask)
+            return torch.mean((y_true - y_pred)**2 * mask) / torch.mean(mask)
         else:
             return torch.mean((y_true - y_pred)**2)
 
